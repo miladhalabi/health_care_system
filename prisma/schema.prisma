@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// --- Auth & Users ---
+model User {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  password  String
+  role      String   // DOCTOR, PHARMACIST, CLINIC_ADMIN, SYSTEM_ADMIN, RECEPTIONIST
+  name      String
+  createdAt DateTime @default(now())
+}
+
+// --- EMR (National Registry) ---
+model NationalPatient {
+  id              String   @id @default(uuid())
+  nationalId      String   @unique
+  fullName        String
+  dateOfBirth     DateTime
+  gender          String
+  bloodType       String?
+  address         String?
+  phone           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  encounters      Encounter[]
+  medicalRecords  MedicalRecord[]
+  consents        Consent[]
+  auditLogs       AuditLog[]
+}
+
+model Encounter {
+  id              String   @id @default(uuid())
+  patientId       String
+  patient         NationalPatient @relation(fields: [patientId], references: [id])
+  clinicId        String   // ID of the clinic where the encounter happened
+  doctorId        String   // ID of the doctor who performed the encounter
+  date            DateTime @default(now())
+  diagnosis       String
+  notes           String?
+  treatmentPlan   String?
+  
+  // Immutability is handled at the application level
+  createdAt       DateTime @default(now())
+}
+
+model MedicalRecord {
+  id              String   @id @default(uuid())
+  patientId       String
+  patient         NationalPatient @relation(fields: [patientId], references: [id])
+  type            String   // ALLERGY, CHRONIC_CONDITION, MEDICATION
+  title           String
+  description     String?
+  status          String   // ACTIVE, INACTIVE, RESOLVED
+  recordedAt      DateTime @default(now())
+}
+
+model Consent {
+  id              String   @id @default(uuid())
+  patientId       String
+  patient         NationalPatient @relation(fields: [patientId], references: [id])
+  clinicId        String
+  status          String   // GRANTED, REVOKED
+  expiresAt       DateTime?
+  updatedAt       DateTime @updatedAt
+}
+
+model AuditLog {
+  id              String   @id @default(uuid())
+  patientId       String?
+  patient         NationalPatient? @relation(fields: [patientId], references: [id])
+  userId          String
+  action          String   // READ_HISTORY, APPEND_ENCOUNTER, VIEW_SUMMARY
+  resource        String
+  details         String?
+  ipAddress       String?
+  timestamp       DateTime @default(now())
+}
