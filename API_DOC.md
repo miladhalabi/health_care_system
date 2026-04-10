@@ -73,7 +73,44 @@ Endpoints under `/auth` are used to manage users and obtain access tokens.
 
 ---
 
-## 3. Error Handling
+## 3. Clinic Management Endpoints
+**Base URL:** `http://localhost:3000/api/v1/clinic`
+
+### Register Clinic
+*   **URL:** `/`
+*   **Method:** `POST`
+*   **Roles:** `SYSTEM_ADMIN`
+*   **Body:** `{"name": "...", "address": "...", "phone": "..."}`
+
+### Get Doctors
+*   **URL:** `/doctors`
+*   **Method:** `GET`
+*   **Roles:** `RECEPTIONIST`, `CLINIC_ADMIN`, `DOCTOR`
+*   **Description:** Returns all doctors registered at the current user's clinic.
+
+### Create Appointment
+*   **URL:** `/appointments`
+*   **Method:** `POST`
+*   **Roles:** `RECEPTIONIST`, `CLINIC_ADMIN`
+*   **Body:** 
+```json
+{
+  "patientId": "national-patient-uuid",
+  "doctorId": "user-uuid",
+  "appointmentDate": "2026-05-01T10:00:00Z",
+  "reason": "..."
+}
+```
+
+### Get Appointments
+*   **URL:** `/appointments`
+*   **Method:** `GET`
+*   **Roles:** `RECEPTIONIST`, `CLINIC_ADMIN`, `DOCTOR`
+*   **Query Params:** `doctorId` (optional for Admin/Receptionist, enforced for Doctor).
+
+---
+
+## 4. Error Handling
 All errors follow this structure:
 ```json
 {

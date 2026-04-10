@@ -16,8 +16,14 @@ export class AuditInterceptor {
     // Determine if it's a READ or WRITE action
     const action = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(method) ? 'WRITE' : 'READ';
 
-    // Try to extract patientId
-    const patientId = params.patientId || params.id || body.patientId || null;
+    // Try to extract patientId safely
+    let patientId = null;
+    if (params) {
+      patientId = params.patientId || params.id;
+    }
+    if (!patientId && body) {
+      patientId = body.patientId;
+    }
 
     return next.handle().pipe(
       tap(async () => {

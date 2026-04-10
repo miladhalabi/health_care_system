@@ -14,7 +14,23 @@ model User {
   role      String
   name      String
   clinicId  String?
+  clinic    Clinic?  @relation(fields: [clinicId], references: [id])
   createdAt DateTime @default(now())
+
+  doctorAppointments       Appointment[] @relation("DoctorAppointments")
+  receptionistAppointments Appointment[] @relation("ReceptionistAppointments")
+}
+
+model Clinic {
+  id        String   @id @default(uuid())
+  name      String
+  address   String
+  phone     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  users        User[]
+  appointments Appointment[]
 }
 
 model NationalPatient {
@@ -32,6 +48,23 @@ model NationalPatient {
   consents       Consent[]
   encounters     Encounter[]
   medicalRecords MedicalRecord[]
+  appointments   Appointment[]
+}
+
+model Appointment {
+  id              String   @id @default(uuid())
+  patientId       String
+  patient         NationalPatient @relation(fields: [patientId], references: [id])
+  clinicId        String
+  clinic          Clinic   @relation(fields: [clinicId], references: [id])
+  doctorId        String
+  doctor          User     @relation("DoctorAppointments", fields: [doctorId], references: [id])
+  receptionistId  String?
+  receptionist    User?    @relation("ReceptionistAppointments", fields: [receptionistId], references: [id])
+  appointmentDate DateTime
+  status          String   // SCHEDULED, COMPLETED, CANCELLED
+  reason          String?
+  createdAt       DateTime @default(now())
 }
 
 model Encounter {
