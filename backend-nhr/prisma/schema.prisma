@@ -1,0 +1,239 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  DOCTOR
+  PHARMACIST
+  RECEPTIONIST
+  PATIENT
+}
+
+enum PrescriptionStatus {
+  PENDING
+  PARTIAL
+  COMPLETED
+}
+
+enum ItemStatus {
+  PENDING
+  DISPENSED
+}
+
+enum AppointmentStatus {
+  WAITING
+  IN_SESSION
+  DONE
+  CANCELLED
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  VIEW
+}
+
+enum BookingType {
+  SCHEDULED
+  WALK_IN
+  EMERGENCY
+}
+
+model User {
+  id            String   @id @default(uuid())
+  nationalId    String   @unique
+  fullName      String
+  password      String
+  role          Role
+  phone         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  clinicId      String?
+  clinic        Clinic?  @relation(fields: [clinicId], references: [id])
+  
+  // Real-time tracking for rotating doctors
+  activeClinicId String?
+  activeClinic   Clinic? @relation("ActiveDoctorSession", fields: [activeClinicId], references: [id])
+  
+  pharmacyId    String?
+  pharmacy      Pharmacy? @relation(fields: [pharmacyId], references: [id])
+  
+  specialtyId   String?
+  specialty     Specialty? @relation(fields: [specialtyId], references: [id])
+  
+  patientProfile PatientProfile?
+  doctorEncounters MedicalEncounter[] @relation("DoctorEncounters")
+  appointments   Appointment[]
+  
+  schedules      DoctorSchedule[]
+  absences       DoctorAbsence[]
+}
+
+model DoctorSchedule {
+  id           String   @id @default(uuid())
+  doctorId     String
+  doctor       User     @relation(fields: [doctorId], references: [id])
+  
+  clinicId     String
+  clinic       Clinic   @relation(fields: [clinicId], references: [id])
+  
+  dayOfWeek    Int      // 0 (Sun) to 6 (Sat)
+  startTime    String   // "09:00"
+  endTime      String   // "14:00"
+  slotDuration Int      @default(20)
+  isActive     Boolean  @default(true)
+}
+
+model DoctorAbsence {
+  id        String   @id @default(uuid())
+  doctorId  String
+  doctor    User     @relation(fields: [doctorId], references: [id])
+  date      DateTime
+  reason    String?
+
+  @@unique([doctorId, date])
+}
+
+model Governorate {
+  id      String   @id @default(uuid())
+  nameAr  String   @unique
+  nameEn  String   @unique
+  clinics Clinic[]
+}
+
+model Specialty {
+  id      String   @id @default(uuid())
+  nameAr  String   @unique
+  nameEn  String   @unique
+  users   User[]
+}
+
+model Clinic {
+  id            String   @id @default(uuid())
+  name          String
+  address       String
+  
+  governorateId String?
+  governorate   Governorate? @relation(fields: [governorateId], references: [id])
+
+  users         User[]
+  activeDoctors User[] @relation("ActiveDoctorSession")
+  schedules     DoctorSchedule[]
+  encounters    MedicalEncounter[]
+  appointments  Appointment[]
+}
+
+model Pharmacy {
+  id        String   @id @default(uuid())
+  name      String
+  address   String
+  users     User[]
+  dispensedItems PrescriptionItem[]
+}
+
+model PatientProfile {
+  id              String   @id @default(uuid())
+  nationalId      String   @unique
+  user            User     @relation(fields: [nationalId], references: [nationalId])
+  
+  // Permanent Records
+  bloodType       String?
+  allergies       String?
+  chronicDiseases String?
+  
+  // Contact Info
+  address         String?
+  phone           String?
+  emergencyContact String?
+  
+  // Compliance & Reliability
+  reliabilityScore   Int @default(100)
+  missedAppointments Int @default(0)
+
+  encounters      MedicalEncounter[]
+  prescriptions   Prescription[]
+  appointments    Appointment[]
+}
+
+model MedicalEncounter {
+  id          String   @id @default(uuid())
+  patientId   String
+  patient     PatientProfile @relation(fields: [patientId], references: [id])
+  doctorId    String
+  doctor      User     @relation("DoctorEncounters", fields: [doctorId], references: [id])
+  clinicId    String
+  clinic      Clinic   @relation(fields: [clinicId], references: [id])
+  date        DateTime @default(now())
+  symptoms    String
+  diagnosis   String
+  notes       String?
+  
+  prescription Prescription?
+}
+
+model Prescription {
+  id          String   @id @default(uuid())
+  encounterId String   @unique
+  encounter   MedicalEncounter @relation(fields: [encounterId], references: [id])
+  patientId   String
+  patient     PatientProfile @relation(fields: [patientId], references: [id])
+  status      PrescriptionStatus @default(PENDING)
+  createdAt   DateTime @default(now())
+  
+  items       PrescriptionItem[]
+}
+
+model PrescriptionItem {
+  id              String   @id @default(uuid())
+  prescriptionId  String
+  prescription    Prescription @relation(fields: [prescriptionId], references: [id])
+  drugName        String
+  dosage          String
+  quantity        Int
+  status          ItemStatus @default(PENDING)
+  
+  dispensedAt     DateTime?
+  pharmacyId      String?
+  pharmacy        Pharmacy? @relation(fields: [pharmacyId], references: [id])
+}
+
+model Appointment {
+  id            String   @id @default(uuid())
+  clinicId      String
+  clinic        Clinic   @relation(fields: [clinicId], references: [id])
+  patientId     String
+  patient       PatientProfile @relation(fields: [patientId], references: [id])
+  userId        String?
+  user          User?    @relation(fields: [userId], references: [id])
+  
+  date          DateTime @default(now())
+  startTime     DateTime?
+  endTime       DateTime?
+  
+  queueNumber   Int
+  status        AppointmentStatus @default(WAITING)
+  bookingType   BookingType       @default(SCHEDULED)
+  isConfirmed   Boolean           @default(false)
+}
+
+model AuditLog {
+  id        String      @id @default(uuid())
+  action    AuditAction
+  entity    String
+  entityId  String
+  userId    String
+  details   Json?
+  createdAt DateTime    @default(now())
+}

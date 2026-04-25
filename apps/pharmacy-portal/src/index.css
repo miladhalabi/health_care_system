@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@plugin "daisyui";
+@import "../../../packages/shared/src/theme/foundation.css";
+@source "../../../packages/shared/src/components/**/*.jsx";
+
+/* Pharmacy-specific UI overrides can go here */

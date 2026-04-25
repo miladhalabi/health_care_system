@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@plugin "daisyui";
+@import "../../../packages/shared/src/theme/foundation.css";
+@source "../../../packages/shared/src/components/**/*.jsx";
+
+/* Patient-specific UI overrides can go here */

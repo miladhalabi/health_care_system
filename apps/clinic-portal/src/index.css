@@ -1,0 +1,14 @@
+@import "tailwindcss";
+@plugin "daisyui";
+@import "../../../packages/shared/src/theme/foundation.css";
+@source "../../../packages/shared/src/components/**/*.jsx";
+
+/* Clinic-specific UI overrides can go here */
+h1 { @apply text-4xl font-black tracking-tight text-stone-900; }
+h2 { @apply text-2xl font-bold text-stone-800; }
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  @apply bg-stone-200 rounded-full hover:bg-stone-300 transition-colors;
+}

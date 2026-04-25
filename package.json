@@ -1,0 +1,17 @@
+{
+  "name": "health_care_system",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "backend-nhr",
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:backend": "npm run dev --workspace=backend-nhr",
+    "dev:clinic": "npm run dev --workspace=apps/clinic-portal",
+    "dev:pharmacy": "npm run dev --workspace=apps/pharmacy-portal",
+    "dev:patient": "npm run dev --workspace=apps/patient-portal"
+  },
+  "type": "module"
+}

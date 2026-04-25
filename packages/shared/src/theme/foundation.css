@@ -1,0 +1,48 @@
+@theme {
+  --font-cairo: "Cairo", sans-serif;
+  
+  /* Unified Warm Medical Palette */
+  --color-primary: #0d9488;
+  --color-primary-hover: #0f766e;
+  --color-secondary: #f59e0b;
+  --color-accent: #f43f5e;
+  
+  --color-base-100: #ffffff;
+  --color-base-200: #fafaf9; /* Stone 50 */
+  --color-base-300: #f5f5f4; /* Stone 100 */
+  
+  /* Shadows */
+  --shadow-card: 0 10px 30px -10px rgba(13, 148, 136, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(13, 148, 136, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
+}
+
+@layer base {
+  :root {
+    font-family: "Cairo", sans-serif;
+    background-color: #fafaf9;
+    color: #44403c;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer components {
+  .card-nhr {
+    @apply bg-white rounded-[2rem] border-0 shadow-card transition-all duration-300 hover:translate-y-[-2px] hover:shadow-xl;
+  }
+
+  .btn-nhr {
+    @apply rounded-2xl font-bold border-none transition-all active:scale-95 h-14 px-8 flex items-center justify-center gap-2;
+  }
+
+  .btn-nhr-primary {
+    @apply rounded-2xl font-bold border-none transition-all active:scale-95 h-14 px-8 flex items-center justify-center gap-2 bg-gradient-to-br from-primary to-teal-700 text-white shadow-lg shadow-teal-500/20 hover:shadow-teal-500/40 disabled:opacity-50;
+  }
+
+  .input-nhr {
+    @apply bg-stone-100/50 border-transparent rounded-2xl focus:bg-white focus:ring-4 focus:ring-primary/10 transition-all font-bold h-14 px-6 text-right;
+  }
+  
+  .badge-nhr {
+    @apply rounded-xl font-black text-[10px] px-3 py-2 uppercase tracking-tighter;
+  }
+}
