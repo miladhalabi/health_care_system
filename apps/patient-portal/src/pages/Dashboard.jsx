@@ -43,6 +43,37 @@ const Dashboard = () => {
     navigate('/login');
   };
 
+  const getDisplayStatus = (appointment) => {
+    if (appointment.status === 'WAITING' && !appointment.isConfirmed && appointment.bookingType === 'SCHEDULED') {
+      return 'BOOKED';
+    }
+
+    if (appointment.status === 'DONE') {
+      return 'ATTENDED';
+    }
+
+    return appointment.status;
+  };
+
+  const getAppointmentBadge = (status) => {
+    if (status === 'BOOKED') return <Badge variant="primary">موعد محجوز</Badge>;
+    if (status === 'WAITING') return <Badge variant="warning">تم تسجيل الحضور</Badge>;
+    if (status === 'IN_SESSION') return <Badge variant="warning">قيد المعاينة</Badge>;
+    if (status === 'ATTENDED') return <Badge variant="success">تم الحضور</Badge>;
+    if (status === 'NO_SHOW') return <Badge variant="error">غياب</Badge>;
+    return <Badge>موعد</Badge>;
+  };
+
+  const upcomingAppointments = appointments.filter((app) => {
+    const status = getDisplayStatus(app);
+    return ['BOOKED', 'WAITING', 'IN_SESSION'].includes(status);
+  });
+
+  const recentAttendance = appointments.filter((app) => {
+    const status = getDisplayStatus(app);
+    return ['ATTENDED', 'NO_SHOW'].includes(status);
+  });
+
   return (
     <div className="min-h-screen bg-stone-50 p-6 lg:p-12 font-cairo" dir="rtl">
       <div className="max-w-6xl mx-auto">
@@ -87,16 +118,16 @@ const Dashboard = () => {
                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {loading ? (
                     <Skeleton className="h-32 w-full" />
-                  ) : appointments.length === 0 ? (
+                  ) : upcomingAppointments.length === 0 ? (
                     <Card className="md:col-span-2 p-8 text-center bg-stone-50 border-2 border-dashed border-stone-200 flex flex-col items-center justify-center min-h-[120px]">
                        <p className="text-stone-400 font-bold text-sm italic">لا توجد مواعيد محجوزة قريباً</p>
                        <Button variant="ghost" onClick={() => navigate('/book')} className="text-primary text-xs mt-2 font-black">احجز موعدك الأول الآن</Button>
                     </Card>
                   ) : (
-                    appointments.map(app => (
+                    upcomingAppointments.map(app => (
                       <Card key={app.id} className="p-6 border border-stone-100 hover:border-primary transition-all">
                          <div className="flex justify-between items-start mb-4">
-                            <Badge variant="primary">موعد محجوز</Badge>
+                            {getAppointmentBadge(getDisplayStatus(app))}
                             <span className="text-[10px] font-black text-stone-400 uppercase tracking-widest">{formatArabicDate(app.startTime)}</span>
                          </div>
                          <h3 className="text-lg font-black text-stone-900">د. {app.user?.fullName}</h3>
@@ -110,6 +141,40 @@ const Dashboard = () => {
                     ))
                   )}
                </div>
+            </section>
+
+            <section className="space-y-6">
+              <h2 className="text-sm font-black text-stone-400 uppercase tracking-widest flex items-center gap-3">
+                 <span className="w-2 h-2 rounded-full bg-stone-300"></span>
+                 سجل الالتزام بالمواعيد
+              </h2>
+
+              {loading ? (
+                <Skeleton className="h-40 w-full" />
+              ) : recentAttendance.length === 0 ? (
+                <Card className="p-8 text-center bg-stone-50 border-2 border-dashed border-stone-200">
+                  <p className="text-stone-400 font-bold text-sm italic">لا توجد نتائج حضور أو غياب مسجلة بعد</p>
+                </Card>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {recentAttendance.map((app) => (
+                    <Card key={app.id} className="p-6 border border-stone-100">
+                      <div className="flex justify-between items-start mb-4">
+                        {getAppointmentBadge(getDisplayStatus(app))}
+                        <span className="text-[10px] font-black text-stone-400 uppercase tracking-widest">
+                          {formatArabicDate(app.startTime)}
+                        </span>
+                      </div>
+                      <h3 className="text-lg font-black text-stone-900">د. {app.user?.fullName}</h3>
+                      <p className="text-stone-400 font-bold text-xs">{app.clinic.name}</p>
+                      <div className="mt-4 pt-4 border-t border-stone-50 flex items-center gap-2 text-primary">
+                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        <span className="text-xs font-black uppercase tracking-widest">{formatArabicTime(app.startTime)}</span>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              )}
             </section>
 
             {/* Medical History Section */}
@@ -195,6 +260,10 @@ const Dashboard = () => {
                         <div>
                            <p className="text-[10px] font-black text-teal-100 uppercase tracking-widest mb-1">الأمراض المزمنة</p>
                            <p className="text-sm font-bold bg-white/10 p-3 rounded-xl inline-block">{data?.chronicDiseases || 'لا توجد سجلات'}</p>
+                        </div>
+                        <div>
+                           <p className="text-[10px] font-black text-teal-100 uppercase tracking-widest mb-1">عدد مرات الغياب</p>
+                           <p className="text-sm font-bold bg-white/10 p-3 rounded-xl inline-block">{data?.missedAppointments ?? 0}</p>
                         </div>
                      </div>
                   </div>

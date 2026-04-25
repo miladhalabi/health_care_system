@@ -87,10 +87,12 @@ This checklist tracks the implementation of the National Digital Health Platform
 ---
 
 ## ⚪ Feature 6: Reliability & Compliance
-**Status:** Pending
+**Status:** In Progress
 
-- [ ] Backend: Attendance tracking logic & Scoring algorithm.
+- [x] Backend: Attendance tracking logic.
+- [ ] Backend: Scoring algorithm.
 - [ ] Backend: Behavioral Enforcement Rules (Booking restrictions).
+- [x] Frontend: Patient attendance history view and missed-appointment count.
 - [ ] Frontend: Reliability Badges & User Compliance Dashboard.
 
 ---

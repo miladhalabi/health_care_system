@@ -31,6 +31,18 @@ const Schedule = () => {
   const [selectedDate, setSelectedDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const [selectedDoctorId, setSelectedDoctorId] = useState(user?.role === 'DOCTOR' ? user.id : '');
 
+  const getDisplayStatus = (appointment) => {
+    if (appointment.status === 'WAITING' && !appointment.isConfirmed && appointment.bookingType === 'SCHEDULED') {
+      return 'BOOKED';
+    }
+
+    if (appointment.status === 'DONE') {
+      return 'ATTENDED';
+    }
+
+    return appointment.status;
+  };
+
   useEffect(() => {
     if (currentClinicId) {
       fetchDoctors();
@@ -79,6 +91,19 @@ const Schedule = () => {
       fetchAppointments();
     } catch (err) {
       addToast('خطأ في تسجيل الحضور', 'error');
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  const handleAttendance = async (appId, outcome) => {
+    setActionLoading(`${appId}:${outcome}`);
+    try {
+      await api.patch(`/clinic/appointments/${appId}/attendance`, { outcome });
+      addToast(outcome === 'NO_SHOW' ? 'تم تسجيل الموعد كغياب' : 'تم تثبيت حضور الموعد');
+      fetchAppointments();
+    } catch (err) {
+      addToast(err.response?.data?.message || 'خطأ في تحديث الحضور', 'error');
     } finally {
       setActionLoading(null);
     }
@@ -153,6 +178,11 @@ const Schedule = () => {
             ) : (
               <div className="grid grid-cols-1 gap-4">
                 {appointments.map((app) => (
+                  (() => {
+                    const displayStatus = getDisplayStatus(app);
+                    const slotEnded = app.endTime ? new Date(app.endTime) <= new Date() : false;
+
+                    return (
                   <Card key={app.id} className="p-0 overflow-hidden border border-stone-100 hover:border-primary/30 transition-all group">
                      <div className="flex items-stretch">
                         {/* Time Block */}
@@ -184,26 +214,50 @@ const Schedule = () => {
                               )}
 
                               <div className="flex items-center gap-4">
-                                 {app.status === 'WAITING' ? (
+                                 {displayStatus === 'WAITING' ? (
                                    <Badge variant="primary">في الطابور</Badge>
-                                 ) : app.status === 'IN_SESSION' ? (
+                                 ) : displayStatus === 'IN_SESSION' ? (
                                    <Badge variant="warning">قيد المعاينة</Badge>
-                                 ) : app.status === 'DONE' ? (
-                                   <Badge variant="success">مكتمل</Badge>
+                                 ) : displayStatus === 'ATTENDED' ? (
+                                   <Badge variant="success">تم الحضور</Badge>
+                                 ) : displayStatus === 'NO_SHOW' ? (
+                                   <Badge variant="error">غياب</Badge>
+                                 ) : displayStatus === 'BOOKED' ? (
+                                   <div className="flex items-center gap-2">
+                                     <Badge>محجوز</Badge>
+                                     <Button 
+                                       onClick={() => handleCheckIn(app.id)}
+                                       loading={actionLoading === app.id}
+                                       className="h-10 px-6 text-xs"
+                                     >
+                                       تسجيل حضور
+                                     </Button>
+                                     <Button
+                                       variant="danger"
+                                       onClick={() => handleAttendance(app.id, 'NO_SHOW')}
+                                       loading={actionLoading === `${app.id}:NO_SHOW`}
+                                       className="h-10 px-4 text-xs"
+                                       disabled={!slotEnded}
+                                     >
+                                       غياب
+                                     </Button>
+                                   </div>
                                  ) : (
-                                   <Button 
-                                     onClick={() => handleCheckIn(app.id)}
-                                     loading={actionLoading === app.id}
+                                   <Button
+                                     onClick={() => handleAttendance(app.id, 'ATTENDED')}
+                                     loading={actionLoading === `${app.id}:ATTENDED`}
                                      className="h-10 px-6 text-xs"
                                    >
-                                     تسجيل حضور
-                                 </Button>
+                                     تثبيت الحضور
+                                   </Button>
                                  )}
                               </div>
                            </div>
                         </div>
                      </div>
                   </Card>
+                    );
+                  })()
                 ))}
               </div>
             )}

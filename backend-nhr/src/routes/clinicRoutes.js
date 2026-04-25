@@ -9,7 +9,8 @@ import {
   getClinicDoctors,
   getDoctorAvailability,
   getClinicAppointments,
-  checkInPatient
+  checkInPatient,
+  markAttendance
 } from '../controllers/clinicController.js';
 import { authenticate, authorize } from '../middlewares/authMiddleware.js';
 
@@ -34,5 +35,6 @@ router.post('/encounter', authorize(['DOCTOR']), createEncounter);
 router.get('/doctors/:clinicId', authorize(['DOCTOR', 'RECEPTIONIST', 'PATIENT']), getClinicDoctors);
 router.get('/availability/:doctorId', authorize(['DOCTOR', 'RECEPTIONIST', 'PATIENT']), getDoctorAvailability);
 router.get('/appointments/:clinicId', authorize(['DOCTOR', 'RECEPTIONIST']), getClinicAppointments);
+router.patch('/appointments/:appointmentId/attendance', authorize(['DOCTOR', 'RECEPTIONIST']), markAttendance);
 
 export default router;

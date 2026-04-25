@@ -22,6 +22,10 @@ class BookingService {
       throw new AppError('Invalid time format', 400);
     }
 
+    // Keep scheduled bookings in WAITING until the database enum migration is applied.
+    // The application layer distinguishes "booked but not checked in" via isConfirmed=false.
+    const initialStatus = 'WAITING';
+
     // 2. Check for double booking (Doctor)
     const existingDoctorBooking = await prisma.appointment.findFirst({
       where: {
@@ -87,6 +91,7 @@ class BookingService {
           endTime: end,
           queueNumber,
           bookingType,
+          status: initialStatus,
           isConfirmed: false // Requires confirmation per plan
         },
         include: {

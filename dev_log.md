@@ -39,6 +39,8 @@ we want to work step by step on this plan and implement it feature by feature wi
 12. [x] Pharmacy Portal: Prescription Search & Dispensing
 
 ## Current Status Log
+- **2026-04-26:** Implemented Reliability & Compliance Phase 1 (Attendance Tracking): scheduled appointments now support explicit booked/attended/no-show outcomes with manual clinic-side attendance marking.
+- **2026-04-26:** Added clinic schedule attendance actions for receptionist/doctor workflows and exposed patient attendance history with missed appointment count in the patient portal.
 - **2026-04-17:** Fixed critical bug in Socket.io room joining (corrected clinicId path).
 - **2026-04-17:** Verified real-time patient-to-doctor notification flow.
 - **2026-04-17:** Implemented Patient Self-Queueing feature (Citizens can join clinic queues remotely).

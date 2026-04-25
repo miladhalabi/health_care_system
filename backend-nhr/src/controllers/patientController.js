@@ -1,5 +1,32 @@
 import BookingService from '../services/BookingService.js';
 import AppError from '../utils/AppError.js';
+import { subDays } from 'date-fns';
+
+const decorateAppointmentsWithAttendanceOutcome = async (prisma, appointments) => {
+  if (!appointments.length) return appointments;
+
+  const auditLogs = await prisma.auditLog.findMany({
+    where: {
+      entity: 'APPOINTMENT',
+      entityId: { in: appointments.map((appointment) => appointment.id) }
+    },
+    orderBy: { createdAt: 'desc' }
+  });
+
+  const latestOutcomeByAppointmentId = new Map();
+
+  for (const log of auditLogs) {
+    const outcome = log.details?.newStatus;
+    if (!['ATTENDED', 'NO_SHOW'].includes(outcome)) continue;
+    if (latestOutcomeByAppointmentId.has(log.entityId)) continue;
+    latestOutcomeByAppointmentId.set(log.entityId, outcome);
+  }
+
+  return appointments.map((appointment) => ({
+    ...appointment,
+    status: latestOutcomeByAppointmentId.get(appointment.id) || appointment.status
+  }));
+};
 
 /**
  * Get all clinics with their governorates
@@ -105,15 +132,24 @@ export const getMyAppointments = async (req, res, next) => {
     const appointments = await prisma.appointment.findMany({
       where: {
         patientId: patientProfile.id,
-        status: { in: ['WAITING', 'IN_SESSION'] }
+        status: { in: ['WAITING', 'IN_SESSION', 'DONE', 'CANCELLED'] },
+        OR: [
+          {
+            status: { in: ['WAITING', 'IN_SESSION'] }
+          },
+          {
+            startTime: { gte: subDays(new Date(), 30) }
+          }
+        ]
       },
       include: {
         clinic: true,
         user: { select: { fullName: true, specialty: true } }
       },
-      orderBy: { startTime: 'asc' }
+      orderBy: { startTime: 'desc' },
+      take: 12
     });
-    res.json(appointments);
+    res.json(await decorateAppointmentsWithAttendanceOutcome(prisma, appointments));
   } catch (error) {
     next(error);
   }

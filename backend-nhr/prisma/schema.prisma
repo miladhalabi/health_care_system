@@ -30,9 +30,12 @@ enum ItemStatus {
 }
 
 enum AppointmentStatus {
+  BOOKED
   WAITING
   IN_SESSION
   DONE
+  ATTENDED
+  NO_SHOW
   CANCELLED
 }
 
