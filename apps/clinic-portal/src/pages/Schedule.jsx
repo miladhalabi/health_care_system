@@ -31,17 +31,7 @@ const Schedule = () => {
   const [selectedDate, setSelectedDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const [selectedDoctorId, setSelectedDoctorId] = useState(user?.role === 'DOCTOR' ? user.id : '');
 
-  const getDisplayStatus = (appointment) => {
-    if (appointment.status === 'WAITING' && !appointment.isConfirmed && appointment.bookingType === 'SCHEDULED') {
-      return 'BOOKED';
-    }
-
-    if (appointment.status === 'DONE') {
-      return 'ATTENDED';
-    }
-
-    return appointment.status;
-  };
+  const getDisplayStatus = (appointment) => appointment.status === 'DONE' ? 'ATTENDED' : appointment.status;
 
   useEffect(() => {
     if (currentClinicId) {

@@ -43,17 +43,7 @@ const Dashboard = () => {
     navigate('/login');
   };
 
-  const getDisplayStatus = (appointment) => {
-    if (appointment.status === 'WAITING' && !appointment.isConfirmed && appointment.bookingType === 'SCHEDULED') {
-      return 'BOOKED';
-    }
-
-    if (appointment.status === 'DONE') {
-      return 'ATTENDED';
-    }
-
-    return appointment.status;
-  };
+  const getDisplayStatus = (appointment) => appointment.status === 'DONE' ? 'ATTENDED' : appointment.status;
 
   const getAppointmentBadge = (status) => {
     if (status === 'BOOKED') return <Badge variant="primary">موعد محجوز</Badge>;

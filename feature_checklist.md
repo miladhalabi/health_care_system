@@ -90,6 +90,7 @@ This checklist tracks the implementation of the National Digital Health Platform
 **Status:** In Progress
 
 - [x] Backend: Attendance tracking logic.
+- [x] Backend: Explicit appointment lifecycle normalization (`BOOKED` / `ATTENDED` / `NO_SHOW`).
 - [ ] Backend: Scoring algorithm.
 - [ ] Backend: Behavioral Enforcement Rules (Booking restrictions).
 - [x] Frontend: Patient attendance history view and missed-appointment count.

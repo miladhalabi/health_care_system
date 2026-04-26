@@ -3,10 +3,6 @@ import SchedulingService from '../services/SchedulingService.js';
 import AuditService from '../services/AuditService.js';
 
 const TERMINAL_APPOINTMENT_STATUSES = ['ATTENDED', 'NO_SHOW', 'DONE', 'CANCELLED'];
-const ATTENDANCE_OUTCOME_TO_STATUS = {
-  ATTENDED: 'DONE',
-  NO_SHOW: 'CANCELLED'
-};
 
 const getStaffClinicId = async (prisma, user) => {
   if (user.role === 'RECEPTIONIST') {
@@ -25,32 +21,6 @@ const getStaffClinicId = async (prisma, user) => {
   return null;
 };
 
-const decorateAppointmentsWithAttendanceOutcome = async (prisma, appointments) => {
-  if (!appointments.length) return appointments;
-
-  const auditLogs = await prisma.auditLog.findMany({
-    where: {
-      entity: 'APPOINTMENT',
-      entityId: { in: appointments.map((appointment) => appointment.id) }
-    },
-    orderBy: { createdAt: 'desc' }
-  });
-
-  const latestOutcomeByAppointmentId = new Map();
-
-  for (const log of auditLogs) {
-    const outcome = log.details?.newStatus;
-    if (!['ATTENDED', 'NO_SHOW'].includes(outcome)) continue;
-    if (latestOutcomeByAppointmentId.has(log.entityId)) continue;
-    latestOutcomeByAppointmentId.set(log.entityId, outcome);
-  }
-
-  return appointments.map((appointment) => ({
-    ...appointment,
-    status: latestOutcomeByAppointmentId.get(appointment.id) || appointment.status
-  }));
-};
-
 /**
  * Get live queue (WAITING and IN_SESSION)
  */
@@ -64,13 +34,7 @@ export const getQueue = async (req, res, next) => {
         clinicId,
         OR: [
           { status: 'IN_SESSION' },
-          {
-            status: 'WAITING',
-            OR: [
-              { bookingType: { not: 'SCHEDULED' } },
-              { isConfirmed: true }
-            ]
-          }
+          { status: 'WAITING' }
         ],
         date: { gte: new Date(new Date().setHours(0,0,0,0)) }
       },
@@ -165,7 +129,7 @@ export const getClinicAppointments = async (req, res, next) => {
       orderBy: { startTime: 'asc' }
     });
 
-    res.json(await decorateAppointmentsWithAttendanceOutcome(prisma, appointments));
+    res.json(appointments);
   } catch (error) {
     next(error);
   }
@@ -210,7 +174,7 @@ export const checkInPatient = async (req, res, next) => {
       throw new AppError('Attendance was already finalized for this appointment', 409);
     }
 
-    if (appointmentToCheckIn.isConfirmed) {
+    if (appointmentToCheckIn.status !== 'BOOKED') {
       throw new AppError('This appointment is already checked in', 409);
     }
 
@@ -373,7 +337,7 @@ export const createEncounter = async (req, res, next) => {
             { status: 'WAITING', bookingType: 'WALK_IN' }
           ]
         },
-        data: { status: 'DONE', isConfirmed: true }
+        data: { status: 'ATTENDED', isConfirmed: true }
     });
 
     res.json(result);
@@ -417,8 +381,6 @@ export const markAttendance = async (req, res, next) => {
     if (!['ATTENDED', 'NO_SHOW'].includes(outcome)) {
       throw new AppError('Invalid attendance outcome', 400);
     }
-
-    const persistedStatus = ATTENDANCE_OUTCOME_TO_STATUS[outcome];
 
     const staffClinicId = await getStaffClinicId(prisma, req.user);
     if (!staffClinicId) {
@@ -472,7 +434,7 @@ export const markAttendance = async (req, res, next) => {
       const updatedAppointment = await tx.appointment.update({
         where: { id: appointmentId },
         data: {
-          status: persistedStatus,
+          status: outcome,
           isConfirmed: outcome === 'ATTENDED' ? true : appointment.isConfirmed
         },
         include: {
@@ -518,13 +480,12 @@ export const markAttendance = async (req, res, next) => {
         entityId: updatedAppointment.id,
         userId: req.user.id,
         details: {
-          message: `Marked appointment attendance as ${outcome}`,
-          previousStatus: appointment.status,
-          newStatus: outcome,
-          persistedStatus,
-          patientId: appointment.patientId,
-          clinicId: appointment.clinicId
-        }
+            message: `Marked appointment attendance as ${outcome}`,
+            previousStatus: appointment.status,
+            newStatus: outcome,
+            patientId: appointment.patientId,
+            clinicId: appointment.clinicId
+          }
       });
 
       return {
