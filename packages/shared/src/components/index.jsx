@@ -57,9 +57,28 @@ export const Badge = ({ children, variant = 'stone', className }) => {
   );
 };
 
+export const ReliabilityBadge = ({ score, className }) => {
+  const getReliabilityData = (s) => {
+    if (s >= 90) return { label: 'مثالي', variant: 'success' };
+    if (s >= 75) return { label: 'ملتزم', variant: 'primary' };
+    if (s >= 50) return { label: 'متوسط', variant: 'warning' };
+    return { label: 'ضعيف', variant: 'error' };
+  };
+
+  const { label, variant } = getReliabilityData(score);
+
+  return (
+    <Badge variant={variant} className={cn('gap-1.5', className)}>
+      <span className="w-1.5 h-1.5 rounded-full bg-current"></span>
+      {label}
+    </Badge>
+  );
+};
+
 export { default as ErrorBoundary } from './ErrorBoundary.jsx';
 export { default as TimeSlotPicker } from './TimeSlotPicker.jsx';
 export { default as Skeleton } from './Skeleton.jsx';
+export * from './PortalLayout.jsx';
 
 
 
