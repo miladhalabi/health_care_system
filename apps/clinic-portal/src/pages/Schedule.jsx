@@ -104,8 +104,8 @@ const Schedule = () => {
       {!currentClinicId ? (
         <Card className="p-20 text-center flex flex-col items-center">
            <div className="text-5xl mb-6">📍</div>
-           <h3 className="text-xl font-black text-stone-900 mb-4">الرجاء تحديد مقر العمل الحالي</h3>
-           <p className="text-stone-500 font-bold max-w-md">
+           <h3 className="text-xl font-black text-slate-900 mb-4">الرجاء تحديد مقر العمل الحالي</h3>
+           <p className="text-slate-500 font-bold max-w-md">
              يجب عليك اختيار العيادة التي تتواجد فيها الآن من القائمة في الأعلى لعرض جدول المواعيد.
            </p>
         </Card>
@@ -117,10 +117,10 @@ const Schedule = () => {
             <div className="flex flex-col md:flex-row gap-6 items-end justify-between">
               <div className="flex gap-4 flex-1">
                 <div className="flex-1 space-y-2">
-                   <label className="text-[10px] font-black text-stone-400 uppercase tracking-widest mr-2">التاريخ</label>
+                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mr-2">التاريخ</label>
                    <input 
                      type="date" 
-                     className="input bg-stone-50 w-full" 
+                     className="input bg-slate-50 w-full" 
                      value={selectedDate}
                      onChange={(e) => setSelectedDate(e.target.value)}
                    />
@@ -128,9 +128,9 @@ const Schedule = () => {
                 
                 {user?.role === 'RECEPTIONIST' && (
                   <div className="flex-1 space-y-2">
-                     <label className="text-[10px] font-black text-stone-400 uppercase tracking-widest mr-2">الطبيب</label>
+                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mr-2">الطبيب</label>
                      <select 
-                       className="select bg-stone-50 w-full rounded-2xl font-bold border-none h-14"
+                       className="select bg-slate-50 w-full rounded-2xl font-bold border-none h-14"
                        value={selectedDoctorId}
                        onChange={(e) => setSelectedDoctorId(e.target.value)}
                      >
@@ -153,7 +153,7 @@ const Schedule = () => {
 
           {/* Schedule List */}
           <div className="space-y-4">
-            <h2 className="text-sm font-black text-stone-400 uppercase tracking-widest flex items-center gap-3">
+            <h2 className="text-sm font-black text-slate-400 uppercase tracking-widest flex items-center gap-3">
                <span className="w-2 h-2 rounded-full bg-primary"></span>
                مواعيد يوم {formatArabicDate(selectedDate)}
             </h2>
@@ -163,7 +163,7 @@ const Schedule = () => {
             ) : appointments.length === 0 ? (
               <Card className="p-20 text-center flex flex-col items-center">
                  <div className="text-5xl mb-6 opacity-10">📅</div>
-                 <p className="text-stone-300 font-black uppercase tracking-widest">لا توجد مواعيد محجوزة لهذا اليوم</p>
+                 <p className="text-slate-300 font-black uppercase tracking-widest">لا توجد مواعيد محجوزة لهذا اليوم</p>
               </Card>
             ) : (
               <div className="grid grid-cols-1 gap-4">
@@ -173,32 +173,32 @@ const Schedule = () => {
                     const slotEnded = app.endTime ? new Date(app.endTime) <= new Date() : false;
 
                     return (
-                  <Card key={app.id} className="p-0 overflow-hidden border border-stone-100 hover:border-primary/30 transition-all group">
+                  <Card key={app.id} className="p-0 overflow-hidden border border-slate-100 hover:border-primary/30 transition-all group">
                      <div className="flex items-stretch">
                         {/* Time Block */}
-                        <div className="w-32 bg-stone-50 flex flex-col items-center justify-center border-l border-stone-100 group-hover:bg-primary/5 transition-colors">
-                           <span className="text-xl font-black text-stone-900">{formatArabicTime(app.startTime)}</span>
-                           <span className="text-[10px] font-bold text-stone-400 uppercase tracking-tighter">بداية الموعد</span>
+                        <div className="w-32 bg-slate-50 flex flex-col items-center justify-center border-l border-slate-100 group-hover:bg-primary/5 transition-colors">
+                           <span className="text-xl font-black text-slate-900">{formatArabicTime(app.startTime)}</span>
+                           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">بداية الموعد</span>
                         </div>
 
                         {/* Info Block */}
                         <div className="flex-1 p-6 flex flex-col md:flex-row justify-between items-center gap-6">
                            <div className="flex items-center gap-6">
                               <div className="avatar">
-                                 <div className="w-14 h-14 rounded-2xl ring ring-stone-50">
+                                 <div className="w-14 h-14 rounded-2xl ring ring-slate-50">
                                     <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${app.patient.user.fullName}`} alt="avatar" />
                                  </div>
                               </div>
                               <div>
-                                 <h3 className="text-lg font-black text-stone-900">{app.patient.user.fullName}</h3>
-                                 <p className="text-xs font-bold text-stone-400 uppercase">رقم وطني: {app.patient.nationalId}</p>
+                                 <h3 className="text-lg font-black text-slate-900">{app.patient.user.fullName}</h3>
+                                 <p className="text-xs font-bold text-slate-400 uppercase">رقم وطني: {app.patient.nationalId}</p>
                               </div>
                            </div>
 
                            <div className="flex items-center gap-8">
                               {user?.role === 'RECEPTIONIST' && (
                                 <div className="text-right hidden md:block">
-                                   <p className="text-[10px] font-black text-stone-400 uppercase tracking-widest">الطبيب المعالج</p>
+                                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">الطبيب المعالج</p>
                                    <p className="text-sm font-bold text-primary">د. {app.user?.fullName}</p>
                                 </div>
                               )}

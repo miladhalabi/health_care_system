@@ -107,19 +107,19 @@ const Dashboard = () => {
     <Layout>
       {/* Search Section */}
       <div className="mb-10">
-        <h2 className="text-sm font-black text-stone-400 uppercase tracking-widest mb-6 flex items-center gap-3">
+        <h2 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-3">
           <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
           البحث عن وصفات المريض
         </h2>
 
-        <form onSubmit={handleSearch} className="card p-8 bg-white border border-stone-100 shadow-xl">
+        <form onSubmit={handleSearch} className="card p-8 bg-white border border-slate-100 shadow-xl">
           <div className="flex flex-col sm:flex-row gap-4 items-end">
             <div className="flex-1 space-y-2">
-              <label className="text-xs font-black text-stone-500 uppercase tracking-widest mr-2">الرقم الوطني للمريض</label>
+              <label className="text-xs font-black text-slate-500 uppercase tracking-widest mr-2">الرقم الوطني للمريض</label>
               <input
                 type="text"
                 placeholder="أدخل الرقم الوطني..."
-                className="input text-center text-xl font-black tracking-widest w-full bg-stone-50"
+                className="input text-center text-xl font-black tracking-widest w-full bg-slate-50"
                 value={nationalId}
                 onChange={(e) => setNationalId(e.target.value)}
                 required
@@ -127,7 +127,7 @@ const Dashboard = () => {
             </div>
             <button
               type="submit"
-              className={`btn btn-primary h-14 px-12 text-lg font-black shadow-xl shadow-teal-500/20 ${searching ? 'loading' : ''}`}
+              className={`btn btn-primary h-14 px-12 text-lg font-black shadow-card ${searching ? 'loading' : ''}`}
               disabled={searching}
             >
               {searching ? '' : 'بحث'}
@@ -148,24 +148,24 @@ const Dashboard = () => {
       {!searching && searched && (
         <>
           {prescriptions.length === 0 ? (
-            <div className="card p-24 bg-white border-2 border-dashed border-stone-200 text-center">
+            <div className="card p-24 bg-white border-2 border-dashed border-slate-200 text-center">
               <div className="text-7xl mb-8 opacity-20">💊</div>
-              <h3 className="text-2xl font-black text-stone-300 uppercase tracking-widest">لا توجد وصفات نشطة</h3>
-              <p className="text-sm text-stone-400 font-bold mt-4">جميع وصفات هذا المريض تم صرفها بالكامل، أو الرقم غير موجود</p>
+              <h3 className="text-2xl font-black text-slate-300 uppercase tracking-widest">لا توجد وصفات نشطة</h3>
+              <p className="text-sm text-slate-400 font-bold mt-4">جميع وصفات هذا المريض تم صرفها بالكامل، أو الرقم غير موجود</p>
             </div>
           ) : (
             <>
               {/* Dispense Action Bar */}
               {selectedItems.length > 0 && (
                 <div className="sticky top-0 z-30 mb-6">
-                  <div className="card p-6 bg-gradient-to-br from-primary to-teal-700 text-white border-none shadow-2xl shadow-teal-500/30 flex flex-row items-center justify-between">
+                  <div className="card p-6 bg-primary text-white border-none shadow-premium flex flex-row items-center justify-between">
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl font-black">
                         {selectedItems.length}
                       </div>
                       <div>
                         <p className="font-black text-lg">أدوية محددة للصرف</p>
-                        <p className="text-teal-100 text-xs font-bold">اضغط صرف لتأكيد العملية</p>
+                        <p className="text-white/60 text-xs font-bold">اضغط صرف لتأكيد العملية</p>
                       </div>
                     </div>
                     <div className="flex gap-3">
@@ -195,9 +195,9 @@ const Dashboard = () => {
                   const someSelected = allItemIds.some((id) => selectedItems.includes(id));
 
                   return (
-                    <div key={prescription.id} className="card bg-white border border-stone-100 shadow-xl overflow-hidden">
+                    <div key={prescription.id} className="card bg-white border border-slate-100 shadow-xl overflow-hidden">
                       {/* Prescription Header */}
-                      <div className="p-8 border-b border-stone-50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                      <div className="p-8 border-b border-slate-50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <div className="flex items-center gap-4">
                           <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center">
                             <svg className="w-6 h-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -208,10 +208,10 @@ const Dashboard = () => {
                             </svg>
                           </div>
                           <div>
-                            <h3 className="text-lg font-black text-stone-900">
+                            <h3 className="text-lg font-black text-slate-900">
                               وصفة طبية - {formatDate(prescription.createdAt)}
                             </h3>
-                            <p className="text-xs font-bold text-stone-400 mt-1">
+                            <p className="text-xs font-bold text-slate-400 mt-1">
                               {prescription.encounter?.doctor?.fullName && `الطبيب: ${prescription.encounter.doctor.fullName}`}
                               {prescription.encounter?.clinic?.name && ` — ${prescription.encounter.clinic.name}`}
                             </p>
@@ -228,7 +228,7 @@ const Dashboard = () => {
                                   ? 'btn-primary text-white' 
                                   : someSelected
                                     ? 'btn-outline btn-primary'
-                                    : 'btn-ghost text-stone-400 hover:text-primary'
+                                    : 'btn-ghost text-slate-400 hover:text-primary'
                               }`}
                             >
                               {allSelected ? 'إلغاء الكل' : 'تحديد الكل'}
@@ -239,14 +239,14 @@ const Dashboard = () => {
 
                       {/* Prescription Items */}
                       {prescription.items.length > 0 ? (
-                        <div className="divide-y divide-stone-50">
+                        <div className="divide-y divide-slate-50">
                           {prescription.items.map((item) => {
                             const isSelected = selectedItems.includes(item.id);
                             return (
                               <div
                                 key={item.id}
                                 onClick={() => toggleItem(item.id)}
-                                className={`p-6 flex items-center gap-6 cursor-pointer transition-all duration-200 hover:bg-stone-50 ${
+                                className={`p-6 flex items-center gap-6 cursor-pointer transition-all duration-200 hover:bg-slate-50 ${
                                   isSelected ? 'bg-primary/5 border-r-4 border-primary' : ''
                                 }`}
                               >
@@ -254,7 +254,7 @@ const Dashboard = () => {
                                 <div className={`w-7 h-7 rounded-lg border-2 flex items-center justify-center flex-shrink-0 transition-all ${
                                   isSelected 
                                     ? 'bg-primary border-primary text-white' 
-                                    : 'border-stone-200 hover:border-primary'
+                                    : 'border-slate-200 hover:border-primary'
                                 }`}>
                                   {isSelected && (
                                     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
@@ -272,14 +272,14 @@ const Dashboard = () => {
 
                                 {/* Drug Details */}
                                 <div className="flex-1">
-                                  <h4 className="text-lg font-black text-stone-900">{item.drugName}</h4>
-                                  <p className="text-sm font-bold text-stone-400 mt-1">{item.dosage}</p>
+                                  <h4 className="text-lg font-black text-slate-900">{item.drugName}</h4>
+                                  <p className="text-sm font-bold text-slate-400 mt-1">{item.dosage}</p>
                                 </div>
 
                                 {/* Quantity */}
                                 <div className="text-center px-4">
-                                  <span className="text-[9px] font-black text-stone-400 uppercase block tracking-widest">الكمية</span>
-                                  <span className="text-2xl font-black text-stone-900">{item.quantity}</span>
+                                  <span className="text-[9px] font-black text-slate-400 uppercase block tracking-widest">الكمية</span>
+                                  <span className="text-2xl font-black text-slate-900">{item.quantity}</span>
                                 </div>
                               </div>
                             );
@@ -287,7 +287,7 @@ const Dashboard = () => {
                         </div>
                       ) : (
                         <div className="p-8 text-center">
-                          <p className="text-stone-400 font-bold text-sm">جميع أدوية هذه الوصفة تم صرفها</p>
+                          <p className="text-slate-400 font-bold text-sm">جميع أدوية هذه الوصفة تم صرفها</p>
                         </div>
                       )}
                     </div>
@@ -301,10 +301,10 @@ const Dashboard = () => {
 
       {/* Initial State */}
       {!searching && !searched && (
-        <div className="card p-24 bg-white border-2 border-dashed border-stone-200 text-center">
+        <div className="card p-24 bg-white border-2 border-dashed border-slate-200 text-center">
           <div className="text-7xl mb-8 opacity-20">🔍</div>
-          <h3 className="text-2xl font-black text-stone-300 uppercase tracking-widest">ابحث عن مريض للبدء</h3>
-          <p className="text-sm text-stone-400 font-bold mt-4">أدخل الرقم الوطني للمريض للاطلاع على وصفاته النشطة</p>
+          <h3 className="text-2xl font-black text-slate-300 uppercase tracking-widest">ابحث عن مريض للبدء</h3>
+          <p className="text-sm text-slate-400 font-bold mt-4">أدخل الرقم الوطني للمريض للاطلاع على وصفاته النشطة</p>
         </div>
       )}
     </Layout>

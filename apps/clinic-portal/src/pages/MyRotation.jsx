@@ -110,7 +110,7 @@ const MyRotation = () => {
         
         {/* Active Session Status */}
         <section>
-          <h2 className="text-sm font-black text-stone-400 uppercase tracking-widest mb-6 flex items-center gap-3">
+          <h2 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-3">
              <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
              مقر العمل الحالي (الجلسة النشطة)
           </h2>
@@ -119,10 +119,10 @@ const MyRotation = () => {
                 <div className="flex items-center gap-6">
                    <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center text-white text-2xl animate-bounce-slow">📍</div>
                    <div>
-                      <h3 className="text-2xl font-black text-stone-900">
+                      <h3 className="text-2xl font-black text-slate-900">
                         {config?.activeClinic?.name || 'غير محدد'}
                       </h3>
-                      <p className="text-sm font-bold text-stone-500">
+                      <p className="text-sm font-bold text-slate-500">
                         {config?.activeClinic 
                           ? `أنت متواجد حالياً في ${config.activeClinic.address}` 
                           : 'الرجاء تحديد العيادة التي تتواجد فيها الآن لتتمكن من استدعاء المرضى'}
@@ -132,7 +132,7 @@ const MyRotation = () => {
                 
                 <div className="flex gap-3">
                    <select 
-                     className="select bg-white border-stone-200 h-14 rounded-2xl px-6 font-bold"
+                     className="select bg-white border-slate-200 h-14 rounded-2xl px-6 font-bold"
                      value={config?.activeClinic?.id || ''}
                      onChange={(e) => handleSwitchSession(e.target.value)}
                    >
@@ -150,11 +150,11 @@ const MyRotation = () => {
         <section>
            <div className="flex justify-between items-end mb-8">
               <div>
-                 <h2 className="text-sm font-black text-stone-400 uppercase tracking-widest flex items-center gap-3">
-                    <span className="w-2 h-2 rounded-full bg-stone-300"></span>
+                 <h2 className="text-sm font-black text-slate-400 uppercase tracking-widest flex items-center gap-3">
+                    <span className="w-2 h-2 rounded-full bg-slate-300"></span>
                     جدول المناوبات الأسبوعي
                  </h2>
-                 <p className="text-xs font-bold text-stone-400 mt-2">قم بإدارة تواجدك في المراكز الطبية المختلفة</p>
+                 <p className="text-xs font-bold text-slate-400 mt-2">قم بإدارة تواجدك في المراكز الطبية المختلفة</p>
               </div>
               <Button onClick={() => setShowModal(true)}>+ إضافة فترة عمل</Button>
            </div>
@@ -164,17 +164,17 @@ const MyRotation = () => {
                 const daySchedules = config?.rotation ? config.rotation.filter(r => r.dayOfWeek === day.id) : [];
                 return (
                   <div key={day.id} className="space-y-4">
-                     <div className="text-center p-3 bg-stone-100 rounded-xl font-black text-xs text-stone-500 uppercase">{day.name}</div>
+                     <div className="text-center p-3 bg-slate-100 rounded-xl font-black text-xs text-slate-500 uppercase">{day.name}</div>
                      <div className="space-y-3">
                         {daySchedules.length === 0 ? (
-                          <div className="h-20 rounded-2xl border-2 border-dashed border-stone-100 flex items-center justify-center opacity-20 text-[10px] font-bold">لا يوجد</div>
+                          <div className="h-20 rounded-2xl border-2 border-dashed border-slate-100 flex items-center justify-center opacity-20 text-[10px] font-bold">لا يوجد</div>
                         ) : daySchedules.map(sched => (
-                          <div key={sched.id} className="card-nhr p-4 bg-white border border-stone-100 relative group overflow-hidden">
+                          <div key={sched.id} className="card-nhr p-4 bg-white border border-slate-100 relative group overflow-hidden">
                              <div className="absolute top-0 right-0 w-1 h-full bg-primary opacity-50"></div>
                              <p className="text-[10px] font-black text-primary truncate">{sched.clinic?.name}</p>
-                             <p className="text-xs font-bold text-stone-900 mt-1">{sched.startTime} - {sched.endTime}</p>
+                             <p className="text-xs font-bold text-slate-900 mt-1">{sched.startTime} - {sched.endTime}</p>
                              <div className="flex justify-between items-center mt-3">
-                                <span className="text-[9px] font-bold text-stone-400">{sched.slotDuration} د/مريض</span>
+                                <span className="text-[9px] font-bold text-slate-400">{sched.slotDuration} د/مريض</span>
                                 <button onClick={() => handleDelete(sched.id)} className="opacity-0 group-hover:opacity-100 transition-all text-rose-500 hover:scale-110">
                                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
                                 </button>
@@ -190,17 +190,17 @@ const MyRotation = () => {
 
         {/* Add Modal */}
         {showModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-stone-900/40 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-300">
              <Card className="max-w-lg w-full p-10 shadow-2xl relative">
-                <button onClick={() => setShowModal(false)} className="absolute top-8 left-8 text-stone-400 hover:text-stone-900 font-bold">✕</button>
-                <h3 className="text-2xl font-black text-stone-900 mb-8">إضافة فترة عمل جديدة</h3>
+                <button onClick={() => setShowModal(false)} className="absolute top-8 left-8 text-slate-400 hover:text-slate-900 font-bold">✕</button>
+                <h3 className="text-2xl font-black text-slate-900 mb-8">إضافة فترة عمل جديدة</h3>
                 
                 <form onSubmit={handleSaveSchedule} className="space-y-6">
                    <div className="space-y-2">
-                      <label className="text-[10px] font-black text-stone-500 uppercase mr-2">المركز الطبي / العيادة</label>
+                      <label className="text-[10px] font-black text-slate-500 uppercase mr-2">المركز الطبي / العيادة</label>
                       <select 
                         required
-                        className="select bg-stone-50 w-full rounded-2xl h-14 font-bold border-none"
+                        className="select bg-slate-50 w-full rounded-2xl h-14 font-bold border-none"
                         value={formData.clinicId}
                         onChange={(e) => setFormData({ ...formData, clinicId: e.target.value })}
                       >
@@ -211,9 +211,9 @@ const MyRotation = () => {
 
                    <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <label className="text-[10px] font-black text-stone-500 uppercase mr-2">اليوم</label>
+                        <label className="text-[10px] font-black text-slate-500 uppercase mr-2">اليوم</label>
                         <select 
-                          className="select bg-stone-50 w-full rounded-2xl h-14 font-bold border-none"
+                          className="select bg-slate-50 w-full rounded-2xl h-14 font-bold border-none"
                           value={formData.dayOfWeek}
                           onChange={(e) => setFormData({ ...formData, dayOfWeek: parseInt(e.target.value) })}
                         >
@@ -221,7 +221,7 @@ const MyRotation = () => {
                         </select>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[10px] font-black text-stone-500 uppercase mr-2">مدة المعاينة (دقائق)</label>
+                        <label className="text-[10px] font-black text-slate-500 uppercase mr-2">مدة المعاينة (دقائق)</label>
                         <Input 
                           type="number" 
                           value={formData.slotDuration} 
@@ -232,7 +232,7 @@ const MyRotation = () => {
 
                    <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <label className="text-[10px] font-black text-stone-500 uppercase mr-2">وقت البدء</label>
+                        <label className="text-[10px] font-black text-slate-500 uppercase mr-2">وقت البدء</label>
                         <Input 
                           type="time" 
                           value={formData.startTime} 
@@ -240,7 +240,7 @@ const MyRotation = () => {
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[10px] font-black text-stone-500 uppercase mr-2">وقت الانتهاء</label>
+                        <label className="text-[10px] font-black text-slate-500 uppercase mr-2">وقت الانتهاء</label>
                         <Input 
                           type="time" 
                           value={formData.endTime} 

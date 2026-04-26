@@ -1,39 +1,38 @@
 @theme {
   --font-cairo: "Cairo", sans-serif;
   
-  /* Refined Medical Palette */
-  --color-primary: #0d9488;
-  --color-primary-hover: #0f766e;
-  --color-primary-subtle: rgba(13, 148, 136, 0.08);
+  /* National Trust Palette (Deep Navy & Sapphire) */
+  --color-primary: #1e3a8a; /* Navy 900 */
+  --color-primary-hover: #1e40af; /* Navy 800 */
+  --color-primary-subtle: rgba(30, 58, 138, 0.05);
   
-  --color-secondary: #f59e0b;
-  --color-accent: #f43f5e;
+  --color-secondary: #0ea5e9; /* Sky 500 */
+  --color-accent: #f43f5e; /* Rose 500 */
   
-  /* Professional Neutrals */
+  /* Professional Neutrals - Shifted to Zinc/Slate for more 'official' feel */
   --color-surface-100: #ffffff;
-  --color-surface-200: #fbfbfb;
-  --color-surface-300: #f4f4f5; /* Zinc 100 style */
+  --color-surface-200: #f8fafc; /* Slate 50 */
+  --color-surface-300: #f1f5f9; /* Slate 100 */
   
   /* High-End Soft Shadows */
-  --shadow-soft: 0 1px 3px 0 rgba(0, 0, 0, 0.02), 0 1px 2px 0 rgba(0, 0, 0, 0.01);
-  --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
-  --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+  --shadow-soft: 0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 1px 2px 0 rgba(15, 23, 42, 0.02);
+  --shadow-card: 0 10px 15px -3px rgba(15, 23, 42, 0.06), 0 4px 6px -2px rgba(15, 23, 42, 0.03);
+  --shadow-premium: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 10px 10px -5px rgba(15, 23, 42, 0.03);
 }
 
 @layer base {
   :root {
     font-family: "Cairo", sans-serif;
-    background-color: #fbfbfb;
-    color: #27272a;
+    background-color: #f8fafc;
+    color: #0f172a;
     -webkit-font-smoothing: antialiased;
     line-height: 1.6;
   }
 }
 
 @layer components {
-  /* Reduced border radius for a more professional 'Precision' look */
   .card-nhr {
-    @apply bg-white rounded-2xl border border-zinc-100 shadow-card transition-all duration-300 hover:shadow-premium;
+    @apply bg-white rounded-2xl border border-slate-100 shadow-card transition-all duration-300 hover:shadow-premium;
   }
 
   .btn-nhr {
@@ -45,7 +44,7 @@
   }
 
   .input-nhr {
-    @apply bg-white border border-zinc-200 rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all font-medium h-12 px-4 text-right outline-none;
+    @apply bg-white border border-slate-200 rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all font-medium h-12 px-4 text-right outline-none;
   }
   
   .badge-nhr {

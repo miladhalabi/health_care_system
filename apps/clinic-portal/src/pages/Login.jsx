@@ -27,29 +27,28 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#fafaf9] px-6 relative overflow-hidden" dir="rtl">
-      {/* Warm Background Shapes */}
-      <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-teal-500/5 rounded-full blur-[120px]"></div>
-      <div className="absolute bottom-[-10%] right-[-5%] w-[50%] h-[50%] bg-amber-500/5 rounded-full blur-[100px]"></div>
+    <div className="min-h-screen flex items-center justify-center bg-surface-200 px-6 relative overflow-hidden font-cairo" dir="rtl">
+      {/* Background Decor */}
+      <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-primary/5 rounded-full blur-[120px]"></div>
       
-      <div className="w-full max-w-[460px] z-10">
-        <Card className="p-12 lg:p-16 border border-stone-100">
-          <div className="flex flex-col items-center mb-12 text-center">
-            <div className="w-20 h-20 bg-primary rounded-[2rem] flex items-center justify-center text-white text-3xl font-black shadow-2xl shadow-teal-500/30 mb-8 transform hover:scale-105 transition-transform cursor-default">
+      <div className="w-full max-w-[440px] z-10">
+        <Card className="p-10 lg:p-14 border-slate-200 shadow-premium">
+          <div className="flex flex-col items-center mb-10 text-center">
+            <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center text-white text-3xl font-black shadow-card mb-6">
               N
             </div>
-            <h2 className="text-3xl font-black text-stone-900 leading-tight">بوابة السجل الوطني</h2>
-            <p className="text-sm font-bold text-stone-400 mt-3 uppercase tracking-[0.2em]">نظام المعلومات الصحية المتطور</p>
+            <h2 className="text-2xl font-black text-slate-900 leading-tight">بوابة السجل الوطني</h2>
+            <p className="text-[11px] font-bold text-slate-400 mt-2 uppercase tracking-[0.2em]">نظام المعلومات الصحية المتطور</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-8">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <Input
               label="الرقم الوطني"
               placeholder="أدخل رقمك الوطني"
               value={nationalId}
               onChange={(e) => setNationalId(e.target.value)}
               required
-              className="text-center text-xl font-black tracking-widest"
+              className="text-center text-lg font-black tracking-widest"
             />
             
             <Input
@@ -59,27 +58,26 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="text-center text-xl"
+              className="text-center text-lg"
             />
             
             {error && (
-              <div className="p-4 bg-rose-50 text-rose-500 rounded-2xl text-[11px] font-black text-center border border-rose-100 animate-shake">
+              <div className="p-3 bg-rose-50 text-rose-500 rounded-xl text-[11px] font-bold text-center border border-rose-100 animate-in fade-in zoom-in-95 duration-300">
                 {error}
               </div>
             )}
 
             <Button 
               type="submit"
-              className="btn-block h-16 text-lg"
+              className="w-full h-14 text-md shadow-card"
               loading={loading}
             >
               تسجيل الدخول للنظام
             </Button>
           </form>
 
-          <div className="mt-14 text-center">
-             <div className="w-12 h-1 bg-stone-100 mx-auto rounded-full mb-6"></div>
-             <p className="text-[10px] text-stone-400 font-black uppercase tracking-[0.3em]">الجمهورية العربية السورية - وزارة الصحة</p>
+          <div className="mt-12 text-center opacity-50">
+             <p className="text-[9px] text-slate-400 font-black uppercase tracking-[0.3em]">الجمهورية العربية السورية - وزارة الصحة</p>
           </div>
         </Card>
       </div>

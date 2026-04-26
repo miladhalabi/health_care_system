@@ -28,14 +28,14 @@ const Search = () => {
     <Layout>
       <div className="max-w-4xl mx-auto">
         <div className="card p-10 bg-white mb-12">
-          <h2 className="text-2xl font-black text-stone-900 mb-2">البحث في السجل الوطني</h2>
-          <p className="text-sm font-bold text-stone-400 mb-8 uppercase tracking-widest">عرض التاريخ الطبي الكامل للمراجع</p>
+          <h2 className="text-2xl font-black text-slate-900 mb-2">البحث في السجل الوطني</h2>
+          <p className="text-sm font-bold text-slate-400 mb-8 uppercase tracking-widest">عرض التاريخ الطبي الكامل للمراجع</p>
           
           <form onSubmit={handleSearch} className="join w-full">
             <input 
               type="text" 
               placeholder="أدخل الرقم الوطني للمراجع..." 
-              className="input input-bordered join-item w-full bg-stone-50 text-center text-xl font-black tracking-widest h-16" 
+              className="input input-bordered join-item w-full bg-slate-50 text-center text-xl font-black tracking-widest h-16" 
               value={nationalId}
               onChange={(e) => setNationalId(e.target.value)}
               required
@@ -57,9 +57,9 @@ const Search = () => {
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-3xl font-black text-stone-900">{patient.user.fullName}</h3>
+                    <h3 className="text-3xl font-black text-slate-900">{patient.user.fullName}</h3>
                     <div className="flex gap-4 mt-2">
-                       <span className="text-xs font-bold text-stone-400 uppercase tracking-widest">الرقم الوطني: {patient.nationalId}</span>
+                       <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">الرقم الوطني: {patient.nationalId}</span>
                        <span className="badge badge-primary badge-outline font-bold">زمرة الدم: {patient.bloodType || '--'}</span>
                     </div>
                   </div>
@@ -67,7 +67,7 @@ const Search = () => {
             </div>
 
             <div className="card p-10 bg-white shadow-xl">
-               <h3 className="text-xl font-black text-stone-900 mb-8 flex items-center gap-2">
+               <h3 className="text-xl font-black text-slate-900 mb-8 flex items-center gap-2">
                   <span className="w-1.5 h-6 bg-primary rounded-full"></span>
                   التاريخ الطبي الكامل
                </h3>

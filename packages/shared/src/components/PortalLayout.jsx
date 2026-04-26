@@ -26,14 +26,14 @@ export const PortalLayout = ({
       {/* Mobile Drawer Overlay */}
       {isMobileMenuOpen && (
         <div 
-          className="fixed inset-0 z-40 bg-zinc-900/20 backdrop-blur-sm lg:hidden transition-opacity"
+          className="fixed inset-0 z-40 bg-slate-900/20 backdrop-blur-sm lg:hidden transition-opacity"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside className={cn(
-        "fixed inset-y-0 right-0 z-50 w-72 bg-white/80 backdrop-blur-xl border-l border-zinc-200/50 transform transition-transform duration-300 lg:translate-x-0 lg:static lg:inset-0",
+        "fixed inset-y-0 right-0 z-50 w-72 bg-white/80 backdrop-blur-xl border-l border-slate-200/50 transform transition-transform duration-300 lg:translate-x-0 lg:static lg:inset-0",
         isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
       )}>
         <div className="flex flex-col h-full">
@@ -43,8 +43,8 @@ export const PortalLayout = ({
               {logo}
             </div>
             <div>
-              <h2 className="text-lg font-black text-zinc-900 leading-tight">{brandName}</h2>
-              <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mt-0.5">{portalName}</p>
+              <h2 className="text-lg font-black text-slate-900 leading-tight">{brandName}</h2>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">{portalName}</p>
             </div>
           </div>
 
@@ -59,7 +59,7 @@ export const PortalLayout = ({
                   "flex items-center gap-3.5 px-5 py-3.5 rounded-xl transition-all duration-200 group",
                   isActive(item.path) 
                     ? "bg-primary/10 text-primary font-bold shadow-soft" 
-                    : "text-zinc-500 hover:bg-zinc-100/50 hover:text-zinc-900"
+                    : "text-slate-500 hover:bg-slate-100/50 hover:text-slate-900"
                 )}
               >
                 <span className={cn(
@@ -78,14 +78,14 @@ export const PortalLayout = ({
 
           {/* User Profile Footer */}
           <div className="p-6 mt-auto">
-            <div className="p-5 rounded-2xl bg-zinc-50 border border-zinc-100/50">
+            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100/50">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-white border border-zinc-200 overflow-hidden shadow-soft">
+                <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 overflow-hidden shadow-soft">
                   <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.fullName}`} alt="avatar" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-sm font-bold text-zinc-900 truncate">{user?.fullName}</p>
-                  <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-tighter">
+                  <p className="text-sm font-bold text-slate-900 truncate">{user?.fullName}</p>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
                     {user?.role === 'DOCTOR' ? 'طبيب متخصص' : user?.role === 'RECEPTIONIST' ? 'موظف استقبال' : 'صيدلاني'}
                   </p>
                 </div>
@@ -104,10 +104,10 @@ export const PortalLayout = ({
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <header className="h-20 lg:h-24 flex items-center justify-between px-6 lg:px-10 bg-white/50 backdrop-blur-md sticky top-0 z-30 border-b border-zinc-200/50">
+        <header className="h-20 lg:h-24 flex items-center justify-between px-6 lg:px-10 bg-white/50 backdrop-blur-md sticky top-0 z-30 border-b border-slate-200/50">
           <div className="flex items-center gap-4">
             <button 
-              className="p-2 -mr-2 lg:hidden text-zinc-500 hover:bg-zinc-100 rounded-lg"
+              className="p-2 -mr-2 lg:hidden text-slate-500 hover:bg-slate-100 rounded-lg"
               onClick={() => setIsMobileMenuOpen(true)}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,7 +116,7 @@ export const PortalLayout = ({
             </button>
             
             <div className="flex flex-col">
-               <h1 className="text-xl lg:text-2xl font-black text-zinc-900 leading-none">
+               <h1 className="text-xl lg:text-2xl font-black text-slate-900 leading-none">
                  {navItems.find(i => i.path === location.pathname)?.label || "لوحة التحكم"}
                </h1>
             </div>
@@ -124,7 +124,7 @@ export const PortalLayout = ({
 
           <div className="flex items-center gap-4">
             {headerActions}
-            <div className="h-8 w-px bg-zinc-200 hidden sm:block"></div>
+            <div className="h-8 w-px bg-slate-200 hidden sm:block"></div>
             <div className="hidden sm:flex items-center gap-2.5 px-4 py-2 bg-emerald-50 rounded-full border border-emerald-100">
                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                <span className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider">النظام متصل</span>
