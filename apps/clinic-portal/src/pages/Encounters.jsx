@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import api from '../api/axios';
 import useAuthStore from '../store/useAuthStore';
-import { Card, Badge, Skeleton, Button, formatArabicDate } from '@nhr/shared';
+import { Badge, Skeleton, formatArabicDate } from '@nhr/shared';
 
 const Encounters = () => {
   const { user } = useAuthStore();
@@ -35,27 +35,27 @@ const Encounters = () => {
   return (
     <Layout>
       {!currentClinicId ? (
-        <Card className="p-20 text-center flex flex-col items-center">
+        <div className="card-nhr p-20 text-center flex flex-col items-center">
            <div className="text-5xl mb-6">📂</div>
-           <h3 className="text-xl font-black text-slate-900 mb-4">الرجاء تحديد مقر العمل الحالي</h3>
-           <p className="text-slate-500 font-bold max-w-md">
+           <h3 className="text-xl font-bold text-content mb-4">الرجاء تحديد مقر العمل الحالي</h3>
+           <p className="text-content-muted font-bold max-w-md">
              يجب عليك اختيار العيادة من القائمة في الأعلى لعرض سجل المعاينات الخاص بها.
            </p>
-        </Card>
+        </div>
       ) : (
-        <Card className="p-0 overflow-hidden">
-          <div className="p-8 border-b border-slate-50 flex justify-between items-center bg-slate-50/30">
+        <div className="card-nhr p-0 overflow-hidden">
+          <div className="p-8 border-b border-border-main flex justify-between items-center bg-surface-bg/30">
              <div>
-                <h2 className="text-2xl font-black text-slate-900 leading-tight">سجل المعاينات المنفذة</h2>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">تاريخ المراجعات في هذا المركز</p>
+                <h2 className="text-2xl font-bold text-content leading-tight">سجل المعاينات المنفذة</h2>
+                <p className="text-[10px] font-bold text-content-muted uppercase tracking-widest mt-1">تاريخ المراجعات في هذا المركز</p>
              </div>
-             <Badge variant="primary" className="h-10 px-6">{encounters.length} معاينة</Badge>
+             <span className="badge-nhr bg-primary text-content-inverse h-10 px-6">{encounters.length} معاينة</span>
           </div>
 
           <div className="overflow-x-auto">
             <table className="table w-full">
               <thead>
-                <tr className="bg-slate-50/20 text-slate-400 text-[10px] uppercase tracking-widest border-b border-slate-100">
+                <tr className="bg-surface-bg/20 text-content-muted text-[10px] uppercase tracking-widest border-b border-border-main">
                   <th className="text-right py-6 pr-8">التاريخ</th>
                   <th className="text-right py-6">المراجع</th>
                   <th className="text-right py-6">التشخيص</th>
@@ -63,10 +63,10 @@ const Encounters = () => {
                   <th className="text-right py-6 pl-8">الإجراء</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-50">
+              <tbody className="divide-y divide-border-main">
                 {loading ? (
                   <tr>
-                    <td colSpan="5" className="p-8">
+                    <td colSpan="5" className="p-8 text-center">
                       <Skeleton className="h-12 w-full mb-4" />
                       <Skeleton className="h-12 w-full mb-4" />
                       <Skeleton className="h-12 w-full" />
@@ -76,30 +76,30 @@ const Encounters = () => {
                   <tr>
                     <td colSpan="5" className="text-center py-24">
                        <div className="text-4xl mb-4 opacity-10">📄</div>
-                       <p className="font-bold text-slate-300 uppercase tracking-widest">لا توجد معاينات مسجلة في هذا المركز حتى الآن</p>
+                       <p className="font-bold text-content-subtle uppercase tracking-widest">لا توجد معاينات مسجلة في هذا المركز حتى الآن</p>
                     </td>
                   </tr>
                 ) : (
                   encounters.map((visit) => (
-                    <tr key={visit.id} className="hover:bg-slate-50/50 transition-colors group">
+                    <tr key={visit.id} className="hover:bg-surface-bg/50 transition-colors group">
                       <td className="pr-8 py-6">
-                         <span className="font-bold text-slate-900">{formatArabicDate(visit.date)}</span>
+                         <span className="font-bold text-content">{formatArabicDate(visit.date)}</span>
                       </td>
                       <td>
-                         <div className="font-black text-slate-800">{visit.patient.user.fullName}</div>
-                         <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{visit.patient.nationalId}</div>
+                         <div className="font-bold text-content">{visit.patient.user.fullName}</div>
+                         <div className="text-[10px] font-bold text-content-muted uppercase tracking-widest">{visit.patient.nationalId}</div>
                       </td>
                       <td>
-                         <Badge variant="slate" className="font-bold">{visit.diagnosis}</Badge>
+                         <span className="badge-nhr bg-surface-bg text-content-muted">{visit.diagnosis}</span>
                       </td>
                       <td>
                          <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-black text-slate-400">Dr</div>
-                            <span className="text-xs font-bold text-slate-600">د. {visit.doctor.fullName}</span>
+                            <div className="w-8 h-8 rounded-full bg-surface-bg flex items-center justify-center text-[10px] font-bold text-content-muted border border-border-main">Dr</div>
+                            <span className="text-xs font-bold text-content-muted">د. {visit.doctor.fullName}</span>
                          </div>
                       </td>
                       <td className="pl-8">
-                         <Button variant="ghost" className="h-8 text-xs font-bold px-4">تفاصيل</Button>
+                         <button className="btn-nhr h-8 text-xs font-bold px-4 bg-surface-bg hover:bg-primary/10 hover:text-primary transition-all">تفاصيل</button>
                       </td>
                     </tr>
                   ))
@@ -107,7 +107,7 @@ const Encounters = () => {
               </tbody>
             </table>
           </div>
-        </Card>
+        </div>
       )}
     </Layout>
   );

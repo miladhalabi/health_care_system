@@ -4,9 +4,9 @@ import { cn } from '../utils/index.js';
 export const Button = ({ className, variant = 'primary', loading, children, ...props }) => {
   const variants = {
     primary: 'btn-nhr-primary',
-    ghost: 'btn-nhr bg-transparent hover:bg-stone-100 text-stone-500',
-    outline: 'btn-nhr bg-transparent border-2 border-primary text-primary hover:bg-primary hover:text-white',
-    danger: 'btn-nhr bg-rose-500 text-white hover:bg-rose-600',
+    ghost: 'btn-nhr bg-transparent hover:bg-surface-bg text-content-muted',
+    outline: 'btn-nhr bg-transparent border-2 border-primary text-primary hover:bg-primary hover:text-content-inverse',
+    danger: 'btn-nhr bg-error text-content-inverse hover:opacity-90',
   };
 
   return (
@@ -31,23 +31,23 @@ export const Card = ({ className, children, ...props }) => {
 export const Input = ({ label, error, className, ...props }) => {
   return (
     <div className="space-y-2 w-full">
-      {label && <label className="text-xs font-black text-stone-500 uppercase tracking-widest mr-2">{label}</label>}
+      {label && <label className="text-xs font-black text-content-muted uppercase tracking-widest mr-2">{label}</label>}
       <input 
-        className={cn('input-nhr w-full', error && 'border-rose-500 ring-4 ring-rose-500/10', className)} 
+        className={cn('input-nhr w-full', error && 'border-error ring-4 ring-error/10', className)} 
         {...props}
       />
-      {error && <p className="text-[10px] font-bold text-rose-500 mr-2">{error}</p>}
+      {error && <p className="text-[10px] font-bold text-error mr-2">{error}</p>}
     </div>
   );
 };
 
 export const Badge = ({ children, variant = 'stone', className }) => {
   const variants = {
-    stone: 'bg-stone-100 text-stone-500',
-    primary: 'bg-primary/10 text-primary',
-    success: 'bg-emerald-50 text-emerald-600',
-    warning: 'bg-amber-50 text-amber-600',
-    error: 'bg-rose-50 text-rose-600',
+    stone: 'bg-surface-bg text-content-muted border border-border-main',
+    primary: 'bg-primary/10 text-primary border border-primary/20',
+    success: 'bg-success/10 text-success border border-success/20',
+    warning: 'bg-warning/10 text-warning border border-warning/20',
+    error: 'bg-error/10 text-error border border-error/20',
   };
 
   return (
@@ -79,6 +79,7 @@ export { default as ErrorBoundary } from './ErrorBoundary.jsx';
 export { default as TimeSlotPicker } from './TimeSlotPicker.jsx';
 export { default as Skeleton } from './Skeleton.jsx';
 export * from './PortalLayout.jsx';
+export * from './ThemeToggle.jsx';
 
 
 

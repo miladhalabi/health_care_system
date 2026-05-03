@@ -11,11 +11,11 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-stone-50 p-6" dir="rtl">
-      <div className="card max-w-md bg-white p-12 shadow-xl text-center border border-stone-200">
+    <div className="min-h-screen flex items-center justify-center bg-surface-bg p-6" dir="rtl">
+      <div className="card-nhr max-w-md bg-surface p-12 text-center">
          <div className="text-6xl mb-6">🚫</div>
-         <h1 className="text-2xl font-black text-stone-900 mb-4">عذراً، {user?.fullName}</h1>
-         <p className="text-stone-500 font-bold leading-relaxed mb-8">
+         <h1 className="text-2xl font-black text-content mb-4">عذراً، {user?.fullName}</h1>
+         <p className="text-content-muted font-bold leading-relaxed mb-8">
             أنت مسجل في النظام بصفة "مواطن/مريض". لا يمكنك الوصول إلى بوابة العيادة المخصصة للأطباء.
          </p>
          <div className="bg-primary/5 p-6 rounded-2xl mb-8 border border-primary/10">
@@ -23,7 +23,7 @@ const Dashboard = () => {
                يرجى التوجه إلى "بوابة المراجع" لمشاهدة سجلك الطبي.
             </p>
          </div>
-         <button onClick={handleLogout} className="btn btn-error btn-block">تسجيل الخروج</button>
+         <button onClick={handleLogout} className="btn-nhr bg-error text-white w-full">تسجيل الخروج</button>
       </div>
     </div>
   );

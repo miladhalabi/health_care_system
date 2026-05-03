@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import useAuthStore from '../store/useAuthStore';
 import { useNavigate } from 'react-router-dom';
-import { Button, Input, Card } from '@nhr/shared';
+import { Button, Input, Card, ThemeToggle } from '@nhr/shared';
 
 const Login = () => {
   const [nationalId, setNationalId] = useState('');
@@ -27,18 +27,23 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-surface-200 px-6 relative overflow-hidden font-cairo" dir="rtl">
+    <div className="min-h-screen flex items-center justify-center bg-surface-bg px-6 relative overflow-hidden font-cairo" dir="rtl">
+      {/* Theme Toggle Corner */}
+      <div className="absolute top-8 right-8 z-20">
+        <ThemeToggle />
+      </div>
+
       {/* Background Decor */}
       <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-primary/5 rounded-full blur-[120px]"></div>
       
       <div className="w-full max-w-[440px] z-10">
-        <Card className="p-10 lg:p-14 border-zinc-200 shadow-premium">
+        <Card className="p-10 lg:p-14 border-border-main shadow-premium">
           <div className="flex flex-col items-center mb-10 text-center">
-            <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center text-white text-3xl font-black shadow-card mb-6">
+            <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center text-content-inverse text-3xl font-black shadow-card mb-6">
               P
             </div>
-            <h2 className="text-2xl font-black text-zinc-900 leading-tight">بوابة المراجع</h2>
-            <p className="text-[11px] font-bold text-zinc-400 mt-2 uppercase tracking-[0.2em]">الوصول الآمن لسجلك الصحي</p>
+            <h2 className="text-2xl font-black text-content leading-tight">بوابة المراجع</h2>
+            <p className="text-[11px] font-bold text-content-muted mt-2 uppercase tracking-[0.2em]">الوصول الآمن لسجلك الصحي</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -64,7 +69,7 @@ const Login = () => {
             </div>
             
             {error && (
-              <div className="p-3 bg-rose-50 text-rose-500 rounded-xl text-[11px] font-bold text-center border border-rose-100 animate-in fade-in zoom-in-95 duration-300">
+              <div className="p-3 bg-error/10 text-error rounded-xl text-[11px] font-bold text-center border border-error/20 animate-in fade-in zoom-in-95 duration-300">
                 {error}
               </div>
             )}
@@ -79,7 +84,7 @@ const Login = () => {
           </form>
 
           <div className="mt-12 text-center opacity-50">
-             <p className="text-[9px] text-zinc-400 font-black uppercase tracking-[0.3em]">الجمهورية العربية السورية - السجل الوطني</p>
+             <p className="text-[9px] text-content-muted font-black uppercase tracking-[0.3em]">الجمهورية العربية السورية - السجل الوطني</p>
           </div>
         </Card>
       </div>

@@ -1,38 +1,111 @@
-@theme {
+:root {
   --font-cairo: "Cairo", sans-serif;
   
-  /* National Trust Palette (Deep Navy & Sapphire) */
-  --color-primary: #1e3a8a; /* Navy 900 */
-  --color-primary-hover: #1e40af; /* Navy 800 */
-  --color-primary-subtle: rgba(30, 58, 138, 0.05);
+  /* Semantic Tokens for National Trust Palette */
+  --brand-primary: #1e3a8a;
+  --brand-primary-hover: #1e40af;
+  --brand-primary-subtle: rgba(30, 58, 138, 0.05);
   
-  --color-secondary: #0ea5e9; /* Sky 500 */
-  --color-accent: #f43f5e; /* Rose 500 */
+  --brand-secondary: #0ea5e9;
+  --brand-accent: #f43f5e;
   
-  /* Professional Neutrals - Shifted to Zinc/Slate for more 'official' feel */
-  --color-surface-100: #ffffff;
-  --color-surface-200: #f8fafc; /* Slate 50 */
-  --color-surface-300: #f1f5f9; /* Slate 100 */
+  /* Surface Tokens (Backgrounds) */
+  --surface-page: #f8fafc;
+  --surface-card: #ffffff;
+  --surface-card-hover: #fbfcfd;
+  --surface-border: #f1f5f9;
+  --surface-divider: #f1f5f9;
   
-  /* High-End Soft Shadows */
+  /* Content Tokens (Text) */
+  --content-main: #0f172a;
+  --content-muted: #64748b;
+  --content-subtle: #94a3b8;
+  --content-inverse: #ffffff;
+  
+  /* Status Tokens */
+  --status-success: #10b981;
+  --status-warning: #f59e0b;
+  --status-error: #ef4444;
+  --status-info: #3b82f6;
+
+  /* Shadows */
   --shadow-soft: 0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 1px 2px 0 rgba(15, 23, 42, 0.02);
   --shadow-card: 0 10px 15px -3px rgba(15, 23, 42, 0.06), 0 4px 6px -2px rgba(15, 23, 42, 0.03);
   --shadow-premium: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 10px 10px -5px rgba(15, 23, 42, 0.03);
 }
 
+/* Dark Mode Overrides */
+.dark {
+  --brand-primary: #3b82f6; /* Blue 500 - Brighter for Dark Mode */
+  --brand-primary-hover: #60a5fa;
+  --brand-primary-subtle: rgba(59, 130, 246, 0.15);
+  
+  --surface-page: #020617; /* Slate 950 */
+  --surface-card: #0f172a; /* Slate 900 */
+  --surface-card-hover: #1e293b; /* Slate 800 */
+  --surface-border: #1e293b;
+  --surface-divider: #1e293b;
+  
+  --content-main: #f8fafc; /* Slate 50 */
+  --content-muted: #e2e8f0; /* Slate 200 - Brighter for Dark Mode labels */
+  --content-subtle: #cbd5e1; /* Slate 300 - Lightened */
+  
+  --brand-primary-subtle: rgba(30, 58, 138, 0.2);
+
+  --shadow-soft: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+  --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+  --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+@theme {
+  --font-cairo: var(--font-cairo);
+  
+  /* Map to Tailwind Utilities */
+  --color-primary: var(--brand-primary);
+  --color-primary-hover: var(--brand-primary-hover);
+  --color-primary-subtle: var(--brand-primary-subtle);
+  --color-secondary: var(--brand-secondary);
+  --color-accent: var(--brand-accent);
+  
+  --color-surface: var(--surface-card);
+  --color-surface-bg: var(--surface-page);
+  --color-border-main: var(--surface-border);
+  
+  --color-content: var(--content-main);
+  --color-content-muted: var(--content-muted);
+  --color-content-subtle: var(--content-subtle);
+  --color-content-inverse: var(--content-inverse);
+
+  /* Status Colors */
+  --color-success: var(--status-success);
+  --color-warning: var(--status-warning);
+  --color-error: var(--status-error);
+  --color-info: var(--status-info);
+  
+  /* Shadows */
+  --shadow-soft: var(--shadow-soft);
+  --shadow-card: var(--shadow-card);
+  --shadow-premium: var(--shadow-premium);
+}
+
 @layer base {
   :root {
-    font-family: "Cairo", sans-serif;
-    background-color: #f8fafc;
-    color: #0f172a;
+    font-family: var(--font-cairo);
+    background-color: var(--surface-page);
+    color: var(--content-main);
     -webkit-font-smoothing: antialiased;
     line-height: 1.6;
+  }
+  
+  /* Ensure background color updates on html tag */
+  html {
+    background-color: var(--surface-page);
   }
 }
 
 @layer components {
   .card-nhr {
-    @apply bg-white rounded-2xl border border-slate-100 shadow-card transition-all duration-300 hover:shadow-premium;
+    @apply bg-surface rounded-2xl border border-border-main shadow-card transition-all duration-300 hover:shadow-premium;
   }
 
   .btn-nhr {
@@ -40,11 +113,11 @@
   }
 
   .btn-nhr-primary {
-    @apply rounded-xl font-bold border-none transition-all active:scale-[0.98] h-12 px-6 flex items-center justify-center gap-2 bg-primary text-white shadow-soft hover:bg-primary-hover hover:shadow-card disabled:opacity-50;
+    @apply rounded-xl font-bold border-none transition-all active:scale-[0.98] h-12 px-6 flex items-center justify-center gap-2 bg-primary text-content-inverse shadow-soft hover:bg-primary-hover hover:shadow-card disabled:opacity-50;
   }
 
   .input-nhr {
-    @apply bg-white border border-slate-200 rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all font-medium h-12 px-4 text-right outline-none;
+    @apply bg-surface border border-border-main rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all font-medium h-12 px-4 text-right outline-none;
   }
   
   .badge-nhr {

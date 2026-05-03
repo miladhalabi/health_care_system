@@ -30,7 +30,9 @@ const DoctorDashboard = () => {
       fetchQueue(currentClinicId);
       initSocket(currentClinicId);
     }
-    // No disconnect here to allow room switching via initSocket
+    return () => {
+      disconnectSocket();
+    };
   }, [currentClinicId]);
 
   useEffect(() => {
@@ -104,13 +106,13 @@ const DoctorDashboard = () => {
   if (!currentClinicId) {
     return (
       <Layout>
-        <Card className="p-20 text-center flex flex-col items-center">
+        <div className="card-nhr p-20 text-center flex flex-col items-center">
            <div className="text-5xl mb-6">🏥</div>
-           <h3 className="text-2xl font-black text-slate-900 mb-4">بوابة العيادة جاهزة</h3>
-           <p className="text-slate-500 font-bold max-w-md">
+           <h3 className="text-2xl font-bold text-content mb-4">بوابة العيادة جاهزة</h3>
+           <p className="text-content-muted font-bold max-w-md">
              الرجاء تحديد العيادة التي تتواجد فيها الآن من القائمة العلوية للبدء باستقبال المرضى.
            </p>
-        </Card>
+        </div>
       </Layout>
     );
   }
@@ -125,81 +127,81 @@ const DoctorDashboard = () => {
              <Skeleton className="h-64 w-full" />
           ) : !isEncountering ? (
             <>
-              <h2 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-3">
+              <h2 className="text-sm font-bold text-content-muted uppercase tracking-widest mb-6 flex items-center gap-3">
                  <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
                  المراجعة الحالية
               </h2>
               
               {activePatient ? (
-                <Card className="p-12 relative overflow-hidden group">
+                <div className="card-nhr p-12 relative overflow-hidden group">
                    <div className="flex flex-col md:flex-row items-center gap-10 relative z-10">
                       <div className="avatar">
-                        <div className="w-28 h-28 rounded-[2rem] ring ring-primary ring-offset-4">
+                        <div className="w-28 h-28 rounded-[2rem] ring ring-primary ring-offset-surface-bg bg-surface-bg">
                           <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${activePatient.patient.user.fullName}`} alt="patient" />
                         </div>
                       </div>
                       <div className="flex-1 text-center md:text-right">
-                        <Badge variant="primary" className="mb-2">رقم الدور: {activePatient.queueNumber}</Badge>
-                        <h3 className="text-4xl font-black text-slate-900">{activePatient.patient.user.fullName}</h3>
-                        <p className="text-slate-400 font-bold mt-2 uppercase tracking-widest text-sm">الرقم الوطني: {activePatient.patient.nationalId}</p>
+                        <span className="badge-nhr bg-primary text-content-inverse mb-2">رقم الدور: {activePatient.queueNumber}</span>
+                        <h3 className="text-4xl font-bold text-content">{activePatient.patient.user.fullName}</h3>
+                        <p className="text-content-muted font-bold mt-2 uppercase tracking-widest text-sm">الرقم الوطني: {activePatient.patient.nationalId}</p>
                         
                         <div className="flex flex-wrap gap-4 mt-6 justify-center md:justify-start">
-                           <Badge>فئة الدم: {activePatient.patient.bloodType || 'غير معروف'}</Badge>
-                           <Badge variant="error">حساسية: {activePatient.patient.allergies || 'لا يوجد'}</Badge>
+                           <span className="badge-nhr bg-surface-bg text-content-muted">فئة الدم: {activePatient.patient.bloodType || 'غير معروف'}</span>
+                           <span className="badge-nhr bg-error/10 text-error">حساسية: {activePatient.patient.allergies || 'لا يوجد'}</span>
                         </div>
                       </div>
                       <div className="flex flex-col gap-3">
-                        <Button onClick={() => setIsEncountering(true)} className="h-20 px-12 text-xl shadow-xl">بدأ المعاينة الآن</Button>
-                        <Button variant="ghost" className="text-slate-400 font-bold">تأجيل المريض</Button>
+                        <button onClick={() => setIsEncountering(true)} className="btn-nhr-primary h-20 px-12 text-xl shadow-xl">بدأ المعاينة الآن</button>
+                        <button className="btn-nhr text-content-muted font-bold">تأجيل المريض</button>
                       </div>
                    </div>
-                </Card>
+                </div>
               ) : (
-                <Card className="p-24 border-2 border-dashed border-slate-200 text-center">
+                <div className="card-nhr p-24 border-2 border-dashed border-border-main text-center bg-transparent shadow-none">
                    <div className="text-7xl mb-8 opacity-20">🏥</div>
-                   <h3 className="text-2xl font-black text-slate-300 uppercase tracking-widest">العيادة جاهزة لاستقبال المراجع التالي</h3>
+                   <h3 className="text-2xl font-bold text-content-subtle uppercase tracking-widest">العيادة جاهزة لاستقبال المراجع التالي</h3>
                    {waitingList.length > 0 && (
-                     <Button onClick={handleCallNext} className="mt-10 h-16 px-14 text-xl shadow-2xl">مناداة المريض التالي</Button>
+                     <button onClick={handleCallNext} className="btn-nhr-primary mt-10 h-16 px-14 text-xl shadow-2xl mx-auto">مناداة المريض التالي</button>
                    )}
-                </Card>
+                </div>
               )}
             </>
           ) : (
             /* Encounter Form */
             <div className="animate-in fade-in zoom-in-95 duration-500">
                {/* Sticky Patient Summary Banner */}
-               <Card className="sticky top-0 z-20 mb-8 p-6 border-b-4 border-primary shadow-lg flex flex-row items-center justify-between gap-6">
+               <div className="card-nhr sticky top-0 z-20 mb-8 p-6 border-b-4 border-primary shadow-lg flex flex-row items-center justify-between gap-6">
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-2xl">👤</div>
                     <div>
-                      <h3 className="text-xl font-black text-slate-900 leading-none">{activePatient.patient.user.fullName}</h3>
-                      <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-widest">رقم وطني: {activePatient.patient.nationalId}</p>
+                      <h3 className="text-xl font-bold text-content leading-none">{activePatient.patient.user.fullName}</h3>
+                      <p className="text-[10px] font-bold text-content-muted mt-1 uppercase tracking-widest">رقم وطني: {activePatient.patient.nationalId}</p>
                     </div>
                   </div>
                   
                   <div className="flex gap-4">
-                     <div className="text-center px-4 border-r border-slate-100">
-                        <span className="text-[9px] font-black text-slate-400 uppercase block">زمرة الدم</span>
-                        <span className="text-sm font-black text-primary">{activePatient.patient.bloodType || '--'}</span>
+                     <div className="text-center px-4 border-r border-border-main">
+                        <span className="text-[9px] font-bold text-content-muted uppercase block">زمرة الدم</span>
+                        <span className="text-sm font-bold text-primary">{activePatient.patient.bloodType || '--'}</span>
                      </div>
                      <div className="text-center px-4">
-                        <span className="text-[9px] font-black text-slate-400 uppercase block">الحساسية</span>
-                        <span className="text-sm font-black text-rose-500">{activePatient.patient.allergies || 'لا يوجد'}</span>
+                        <span className="text-[9px] font-bold text-content-muted uppercase block">الحساسية</span>
+                        <span className="text-sm font-bold text-error">{activePatient.patient.allergies || 'لا يوجد'}</span>
                      </div>
                   </div>
 
-                  <Button variant="ghost" onClick={() => setIsEncountering(false)} className="text-slate-300 hover:text-slate-900 text-[10px]">إلغاء الجلسة</Button>
-               </Card>
+                  <button onClick={() => setIsEncountering(false)} className="btn-nhr text-content-subtle hover:text-content text-[10px] h-auto px-2">إلغاء الجلسة</button>
+               </div>
 
                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                   <div className="space-y-8">
-                    <Card className="p-8">
-                       <h4 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-6">التشخيص السريري</h4>
+                    <div className="card-nhr p-8">
+                       <h4 className="text-xs font-bold text-content-muted uppercase tracking-[0.2em] mb-6">التشخيص السريري</h4>
                        <div className="space-y-6">
                           <div className="form-control">
-                             <label className="label py-1"><span className="label-text font-bold text-slate-500 text-xs text-right w-full">الأعراض والشكوى</span></label>
+                             <label className="label py-1"><span className="label-text font-bold text-content-muted text-xs text-right w-full">الأعراض والشكوى</span></label>
                              <textarea 
-                                className="textarea bg-slate-50 h-32 text-right font-bold text-slate-700 leading-relaxed border-transparent focus:bg-white focus:ring-4 focus:ring-primary/10 transition-all rounded-2xl"
+                                className="textarea bg-surface-bg h-32 text-right font-bold text-content leading-relaxed border-transparent focus:bg-surface focus:ring-4 focus:ring-primary/5 transition-all rounded-2xl outline-none"
                                 placeholder="صف الأعراض التي يعاني منها المريض..."
                                 value={symptoms}
                                 onChange={(e) => setSymptoms(e.target.value)}
@@ -207,10 +209,10 @@ const DoctorDashboard = () => {
                              ></textarea>
                           </div>
                           <div className="form-control">
-                             <label className="label py-1"><span className="label-text font-bold text-slate-500 text-xs text-right w-full">التشخيص النهائي</span></label>
+                             <label className="label py-1"><span className="label-text font-bold text-content-muted text-xs text-right w-full">التشخيص النهائي</span></label>
                              <input 
                                 type="text" 
-                                className="input bg-slate-50 text-right font-black text-slate-800 border-transparent focus:bg-white focus:ring-4 focus:ring-primary/10 transition-all rounded-2xl h-14 px-6"
+                                className="input-nhr w-full bg-surface-bg text-right font-bold text-content h-14 px-6"
                                 placeholder="اكتب التشخيص هنا..."
                                 value={diagnosis}
                                 onChange={(e) => setDiagnosis(e.target.value)}
@@ -218,62 +220,61 @@ const DoctorDashboard = () => {
                              />
                           </div>
                        </div>
-                    </Card>
+                    </div>
                   </div>
 
                   <div className="space-y-8">
-                    <Card className="p-8">
-                       <h4 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-6">الوصفة الطبية الإلكترونية</h4>
+                    <div className="card-nhr p-8">
+                       <h4 className="text-xs font-bold text-content-muted uppercase tracking-[0.2em] mb-6">الوصفة الطبية الإلكترونية</h4>
                        <div className="space-y-4">
                           {prescriptionItems.map((item, index) => (
                             <div key={index} className="flex gap-2 items-end group">
                                <div className="flex-1 space-y-1">
-                                  {index === 0 && <label className="text-[9px] font-bold text-slate-400 block mr-2">الدواء والجرعة</label>}
-                                  <div className="join w-full">
+                                  {index === 0 && <label className="text-[9px] font-bold text-content-muted block mr-2">الدواء والجرعة</label>}
+                                  <div className="flex gap-1 w-full">
                                     <input 
                                        type="text" 
                                        placeholder="اسم الدواء" 
-                                       className="input input-sm join-item bg-slate-50 w-2/3 text-right" 
+                                       className="input-nhr h-9 text-xs flex-[2] bg-surface-bg" 
                                        value={item.drugName}
                                        onChange={(e) => updatePrescriptionItem(index, 'drugName', e.target.value)}
                                     />
                                     <input 
                                        type="text" 
                                        placeholder="الجرعة" 
-                                       className="input input-sm join-item bg-slate-50 w-1/3 text-right text-[10px]" 
+                                       className="input-nhr h-9 text-[10px] flex-1 bg-surface-bg" 
                                        value={item.dosage}
                                        onChange={(e) => updatePrescriptionItem(index, 'dosage', e.target.value)}
                                     />
                                   </div>
                                </div>
                                <div className="w-16 space-y-1">
-                                  {index === 0 && <label className="text-[9px] font-bold text-slate-400 block mr-1">الكمية</label>}
+                                  {index === 0 && <label className="text-[9px] font-bold text-content-muted block mr-1">الكمية</label>}
                                   <input 
                                      type="number" 
-                                     className="input input-sm bg-slate-50 w-full text-center font-bold" 
+                                     className="input-nhr h-9 w-full text-center font-bold bg-surface-bg" 
                                      value={item.quantity}
                                      onChange={(e) => updatePrescriptionItem(index, 'quantity', parseInt(e.target.value))}
                                   />
                                </div>
                                <button 
                                   onClick={() => removePrescriptionRow(index)} 
-                                  className="btn btn-ghost btn-sm btn-square text-slate-300 hover:text-rose-500"
+                                  className="w-9 h-9 flex items-center justify-center rounded-lg text-content-subtle hover:text-error transition-colors"
                                   disabled={prescriptionItems.length === 1}
                                >✕</button>
                             </div>
                           ))}
-                          <Button variant="ghost" onClick={addPrescriptionRow} className="btn-block h-10 text-primary text-xs border-2 border-dashed border-slate-100">+ إضافة دواء آخر</Button>
+                          <button onClick={addPrescriptionRow} className="btn-nhr w-full h-10 text-primary text-xs border-2 border-dashed border-border-main hover:bg-primary/5 transition-all">+ إضافة دواء آخر</button>
                        </div>
-                    </Card>
+                    </div>
 
-                    <Button 
+                    <button 
                        onClick={handleSubmitEncounter}
                        disabled={submitting || !diagnosis || !symptoms}
-                       className="btn-block h-20 text-xl shadow-2xl"
-                       loading={submitting}
+                       className="btn-nhr-primary w-full h-20 text-xl shadow-2xl"
                     >
-                       إتمام المعاينة وإرسالها للسجل الوطني
-                    </Button>
+                       {submitting ? 'جاري الحفظ...' : 'إتمام المعاينة وإرسالها للسجل الوطني'}
+                    </button>
                   </div>
                </div>
             </div>
@@ -284,43 +285,43 @@ const DoctorDashboard = () => {
         <div className="lg:col-span-4">
            {isEncountering ? (
               <div className="animate-in slide-in-from-left-5 duration-500">
-                <h2 className="text-xs font-black text-slate-900 uppercase tracking-widest mb-6 flex items-center gap-2">
+                <h2 className="text-xs font-bold text-content uppercase tracking-widest mb-6 flex items-center gap-2">
                    <span className="w-1.5 h-6 bg-primary rounded-full"></span>
                    التاريخ الطبي للمراجع
                 </h2>
-                <Card className="p-8 max-h-[700px] overflow-y-auto scrollbar-hide">
+                <div className="card-nhr p-8 max-h-[700px] overflow-y-auto scrollbar-hide">
                    <PatientHistory history={history} />
-                </Card>
+                </div>
               </div>
            ) : (
               <div>
                  <div className="flex justify-between items-end mb-6">
-                    <h2 className="text-xs font-black text-slate-900 uppercase tracking-widest">قائمة الانتظار</h2>
-                    <Badge>{waitingList.length} مريض</Badge>
+                    <h2 className="text-xs font-bold text-content uppercase tracking-widest">قائمة الانتظار</h2>
+                    <span className="badge-nhr bg-surface-bg text-content-muted">{waitingList.length} مريض</span>
                  </div>
                  
-                 <Card className="p-0 overflow-hidden">
-                    <div className="divide-y divide-slate-50 max-h-[600px] overflow-y-auto scrollbar-hide">
+                 <div className="card-nhr p-0 overflow-hidden">
+                    <div className="divide-y divide-border-main max-h-[600px] overflow-y-auto scrollbar-hide">
                        {waitingList.length === 0 ? (
                           <div className="p-12 text-center opacity-30 font-bold italic">القائمة فارغة</div>
                        ) : (
                           waitingList.map((item) => (
-                            <div key={item.id} className="p-6 hover:bg-slate-50 transition-colors flex items-center gap-4 group cursor-pointer" onClick={() => callPatient(item.id)}>
-                               <div className="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center font-black text-slate-400 group-hover:bg-primary group-hover:text-white transition-all">
+                            <div key={item.id} className="p-6 hover:bg-surface-bg transition-colors flex items-center gap-4 group cursor-pointer" onClick={() => callPatient(item.id)}>
+                               <div className="w-10 h-10 bg-surface-bg rounded-xl flex items-center justify-center font-bold text-content-muted group-hover:bg-primary group-hover:text-content-inverse transition-all">
                                  {item.queueNumber}
                                </div>
                                <div className="flex-1">
-                                  <h4 className="font-bold text-slate-800 text-sm">{item.patient.user.fullName}</h4>
-                                  <p className="text-[9px] font-bold text-slate-400 mt-1 uppercase tracking-widest">{item.patient.nationalId}</p>
+                                  <h4 className="font-bold text-content text-sm">{item.patient.user.fullName}</h4>
+                                  <p className="text-[9px] font-bold text-content-muted mt-1 uppercase tracking-widest">{item.patient.nationalId}</p>
                                 </div>
                                <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                                  <span className="text-[10px] font-black text-primary uppercase">مناداة</span>
+                                  <span className="text-[10px] font-bold text-primary uppercase">مناداة</span>
                                </div>
                             </div>
                           ))
                        )}
                     </div>
-                 </Card>
+                 </div>
               </div>
            )}
         </div>

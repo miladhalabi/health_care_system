@@ -155,10 +155,10 @@ const BookAppointment = () => {
             {step === 0 ? '← العودة للسجل' : 'رجوع'}
           </Button>
           <div className="text-center flex-1">
-             <h1 className="text-2xl font-black text-zinc-900">حجز موعد جديد</h1>
+             <h1 className="text-2xl font-black text-content">حجز موعد جديد</h1>
              <div className="flex items-center justify-center gap-2 mt-3">
                 {[0, 1, 2, 3].map(i => (
-                  <div key={i} className={cn("h-1 rounded-full transition-all duration-500", step === i ? "w-8 bg-primary" : "w-1.5 bg-zinc-200")}></div>
+                  <div key={i} className={cn("h-1 rounded-full transition-all duration-500", step === i ? "w-8 bg-primary" : "w-1.5 bg-border-main")}></div>
                 ))}
              </div>
           </div>
@@ -169,14 +169,14 @@ const BookAppointment = () => {
         {step === 0 && (
           <div className="space-y-6">
             <Card className="p-1.5 flex gap-1.5">
-               <button 
-                 onClick={() => { setSearchMode('clinic'); setFilters({ ...filters, query: '' }); }}
-                 className={cn("flex-1 h-12 rounded-xl font-black text-[13px] transition-all", searchMode === 'clinic' ? "bg-primary text-white shadow-soft" : "text-zinc-400 hover:text-zinc-600")}
-               >بحث حسب العيادة</button>
-               <button 
-                 onClick={() => { setSearchMode('doctor'); setFilters({ ...filters, query: '' }); }}
-                 className={cn("flex-1 h-12 rounded-xl font-black text-[13px] transition-all", searchMode === 'doctor' ? "bg-primary text-white shadow-soft" : "text-zinc-400 hover:text-zinc-600")}
-               >بحث حسب الطبيب</button>
+                <button 
+                  onClick={() => { setSearchMode('clinic'); setFilters({ ...filters, query: '' }); }}
+                  className={cn("flex-1 h-12 rounded-xl font-bold text-[13px] transition-all", searchMode === 'clinic' ? "bg-primary text-content-inverse shadow-soft" : "text-content-muted hover:bg-surface-bg")}
+                >بحث حسب العيادة</button>
+                <button 
+                  onClick={() => { setSearchMode('doctor'); setFilters({ ...filters, query: '' }); }}
+                  className={cn("flex-1 h-12 rounded-xl font-bold text-[13px] transition-all", searchMode === 'doctor' ? "bg-primary text-content-inverse shadow-soft" : "text-content-muted hover:bg-surface-bg")}
+                >بحث حسب الطبيب</button>
             </Card>
 
             <Card className="p-6">
@@ -189,7 +189,7 @@ const BookAppointment = () => {
                   />
                   {searchMode === 'doctor' && (
                     <select 
-                      className="select bg-zinc-50 h-12 rounded-xl font-bold border border-zinc-100 px-4 text-sm"
+                      className="select bg-surface-bg h-12 rounded-xl font-bold border border-border-main px-4 text-sm"
                       value={filters.specialtyId}
                       onChange={(e) => setFilters({ ...filters, specialtyId: e.target.value })}
                     >
@@ -199,7 +199,7 @@ const BookAppointment = () => {
                   )}
                   {searchMode === 'clinic' && (
                     <select 
-                      className="select bg-zinc-50 h-12 rounded-xl font-bold border border-zinc-100 px-4 text-sm"
+                      className="select bg-surface-bg h-12 rounded-xl font-bold border border-border-main px-4 text-sm"
                       value={filters.govId}
                       onChange={(e) => setFilters({ ...filters, govId: e.target.value })}
                     >
@@ -222,18 +222,18 @@ const BookAppointment = () => {
                         <div className="w-10 h-10 bg-primary/10 text-primary rounded-xl flex items-center justify-center text-lg group-hover:bg-primary group-hover:text-white transition-all">🏥</div>
                         <Badge variant="stone">{clinic.governorate?.nameAr}</Badge>
                       </div>
-                      <h3 className="text-lg font-black text-zinc-900 leading-tight">{clinic.name}</h3>
-                      <p className="text-zinc-400 font-bold mt-1 text-xs">{clinic.address}</p>
+                      <h3 className="text-lg font-black text-content leading-tight">{clinic.name}</h3>
+                      <p className="text-content-muted font-bold mt-1 text-xs">{clinic.address}</p>
                    </div>
                  ))
                ) : (
                  filteredDoctors.map(doctor => (
                    <div key={doctor.id} onClick={() => handleSelectDoctor(doctor)} className="card-nhr p-5 cursor-pointer group flex items-center gap-4">
-                      <div className="w-16 h-16 rounded-xl bg-zinc-100 flex-shrink-0 overflow-hidden border border-zinc-100 shadow-soft">
+                      <div className="w-16 h-16 rounded-xl bg-zinc-100 flex-shrink-0 overflow-hidden border border-border-main shadow-soft">
                         <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${doctor.fullName}`} alt="avatar" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-black text-zinc-900 leading-tight">د. {doctor.fullName}</h3>
+                        <h3 className="text-lg font-black text-content leading-tight">د. {doctor.fullName}</h3>
                         <p className="text-primary text-[11px] font-bold mt-1">{doctor.specialty?.nameAr}</p>
                       </div>
                    </div>
@@ -246,7 +246,7 @@ const BookAppointment = () => {
         {/* Step 1: Intermediate Choice */}
         {step === 1 && (
           <div className="space-y-6">
-            <h2 className="text-lg font-black text-zinc-900 text-center mb-6">
+            <h2 className="text-lg font-black text-content text-center mb-6">
               {searchMode === 'clinic' ? `الأطباء المتوفرون في ${selectedClinic?.name}` : `العيادات التي يتواجد بها د. ${selectedDoctor?.fullName}`}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -257,16 +257,16 @@ const BookAppointment = () => {
                ) : searchMode === 'clinic' ? (
                  doctors.map(doctor => (
                    <div key={doctor.id} onClick={() => handleSelectDoctor(doctor)} className="card-nhr p-5 cursor-pointer flex items-center gap-4">
-                      <div className="w-14 h-14 rounded-xl bg-zinc-100 overflow-hidden border border-zinc-100"><img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${doctor.fullName}`} alt="avatar" /></div>
-                      <div><h3 className="text-md font-black text-zinc-900 leading-tight">د. {doctor.fullName}</h3><p className="text-primary text-[11px] font-bold">{doctor.specialty?.nameAr}</p></div>
+                      <div className="w-14 h-14 rounded-xl bg-zinc-100 overflow-hidden border border-border-main"><img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${doctor.fullName}`} alt="avatar" /></div>
+                      <div><h3 className="text-md font-black text-content leading-tight">د. {doctor.fullName}</h3><p className="text-primary text-[11px] font-bold">{doctor.specialty?.nameAr}</p></div>
                    </div>
                  ))
                ) : (
                  clinics.map(clinic => (
                    <div key={clinic.id} onClick={() => handleFinalLocationSelection(clinic)} className="card-nhr p-6 cursor-pointer group">
                       <div className="w-10 h-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center mb-3 group-hover:bg-primary group-hover:text-white transition-all">🏥</div>
-                      <h3 className="text-lg font-black text-zinc-900 leading-tight">{clinic.name}</h3>
-                      <p className="text-zinc-400 font-bold mt-1 text-xs">{clinic.address} — {clinic.governorate?.nameAr}</p>
+                      <h3 className="text-lg font-black text-content leading-tight">{clinic.name}</h3>
+                      <p className="text-content-muted font-bold mt-1 text-xs">{clinic.address} — {clinic.governorate?.nameAr}</p>
                    </div>
                  ))
                )}
@@ -279,20 +279,20 @@ const BookAppointment = () => {
           <div className="space-y-8">
             <Card className="flex flex-col md:flex-row gap-8 items-center justify-between border-primary/20 bg-primary/5">
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-xl bg-white shadow-soft border border-zinc-100 overflow-hidden"><img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${selectedDoctor?.fullName}`} alt="avatar" /></div>
+                <div className="w-16 h-16 rounded-xl bg-surface shadow-soft border border-border-main overflow-hidden"><img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${selectedDoctor?.fullName}`} alt="avatar" /></div>
                 <div>
-                  <h3 className="text-xl font-black text-zinc-900">د. {selectedDoctor?.fullName}</h3>
-                  <p className="text-zinc-500 font-bold text-xs mt-1">الموقع: <span className="text-primary font-black">{selectedClinic?.name}</span></p>
+                  <h3 className="text-xl font-black text-content">د. {selectedDoctor?.fullName}</h3>
+                  <p className="text-content-muted font-bold text-xs mt-1">الموقع: <span className="text-primary font-black">{selectedClinic?.name}</span></p>
                 </div>
               </div>
               
-              <div className="flex gap-2 bg-white/50 p-2 rounded-2xl">
+              <div className="flex gap-2 bg-surface/50 p-2 rounded-2xl">
                 {[0, 1, 2, 3, 4].map(offset => {
                   const date = addDays(new Date(), offset);
                   const dateKey = format(date, 'yyyy-MM-dd');
                   const isSelected = selectedDate === dateKey;
                   return (
-                    <button key={offset} onClick={() => handleDateChange(dateKey)} className={cn("flex flex-col items-center justify-center w-14 h-16 rounded-xl transition-all border", isSelected ? "bg-primary border-primary text-white shadow-card" : "bg-white border-zinc-100 text-zinc-400 hover:border-primary/30")}>
+                    <button key={offset} onClick={() => handleDateChange(dateKey)} className={cn("flex flex-col items-center justify-center w-14 h-16 rounded-xl transition-all border", isSelected ? "bg-primary border-primary text-white shadow-card" : "bg-surface border-border-main text-content-muted hover:border-primary/30")}>
                       <span className="text-[9px] font-black uppercase mb-0.5">{format(date, 'EEE')}</span>
                       <span className="text-lg font-black">{format(date, 'dd')}</span>
                     </button>
@@ -303,7 +303,7 @@ const BookAppointment = () => {
 
             <div className="space-y-4">
                <div className="flex items-center justify-between px-2">
-                 <h3 className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">المواعيد المتاحة ليوم {formatArabicDate(selectedDate)}</h3>
+                 <h3 className="text-[11px] font-black text-content-muted uppercase tracking-widest">المواعيد المتاحة ليوم {formatArabicDate(selectedDate)}</h3>
                  {selectedSlot && <Badge variant="primary" className="animate-in fade-in zoom-in-95 duration-300">تم اختيار: {selectedSlot.start}</Badge>}
                </div>
                <TimeSlotPicker slots={slots} selectedSlot={selectedSlot} onSelect={setSelectedSlot} loading={loading} />
@@ -321,8 +321,8 @@ const BookAppointment = () => {
         {step === 3 && (
           <Card className="p-12 text-center animate-in zoom-in-95 duration-500 border-emerald-100 bg-emerald-50/10">
             <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-soft">✓</div>
-            <h2 className="text-2xl font-black text-zinc-900 mb-2">تم الحجز بنجاح!</h2>
-            <p className="text-zinc-500 font-medium mb-10 max-w-md mx-auto leading-relaxed text-sm">
+            <h2 className="text-2xl font-black text-content mb-2">تم الحجز بنجاح!</h2>
+            <p className="text-content-muted font-medium mb-10 max-w-md mx-auto leading-relaxed text-sm">
               تم حجز موعدك مع د. {selectedDoctor?.fullName} في {selectedClinic?.name} يوم {formatArabicDate(selectedDate)} الساعة {selectedSlot?.start}.
             </p>
             <div className="flex flex-col gap-3 max-w-xs mx-auto">

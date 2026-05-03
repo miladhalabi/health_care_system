@@ -80,9 +80,9 @@ const Layout = ({ children }) => {
 
   const headerActions = user?.role === 'DOCTOR' && (
     <div className="flex flex-col ml-4">
-       <p className="text-[9px] font-black text-zinc-400 uppercase tracking-widest mb-1">المقر الحالي</p>
+       <p className="text-[9px] font-bold text-content-muted uppercase tracking-widest mb-1">المقر الحالي</p>
        <select 
-         className="select select-sm select-bordered h-9 min-h-0 bg-white border-zinc-200 rounded-lg font-bold text-[11px] px-3 focus:ring-primary/10"
+         className="select select-sm h-9 min-h-0 bg-surface border border-border-main rounded-lg font-bold text-[11px] px-3 focus:ring-4 focus:ring-primary/10 outline-none transition-all"
          value={activeSession?.id || ''}
          onChange={(e) => handleSwitchSession(e.target.value)}
        >

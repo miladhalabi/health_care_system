@@ -47,30 +47,30 @@ const ReceptionDashboard = () => {
     <Layout>
       {/* Warm Stats Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-        <div className="card p-8 bg-gradient-to-br from-white to-primary/5">
+        <div className="card-nhr p-8 bg-gradient-to-br from-surface to-primary/5">
            <div className="flex items-center gap-5">
               <div className="w-16 h-16 bg-primary/10 rounded-3xl flex items-center justify-center text-3xl shadow-inner">👥</div>
               <div>
-                 <p className="text-sm font-bold text-slate-400 uppercase tracking-widest leading-none">إجمالي المراجعين</p>
-                 <h3 className="text-4xl font-black text-slate-900 mt-2">{queue.length}</h3>
+                 <p className="text-sm font-bold text-content-muted uppercase tracking-widest leading-none">إجمالي المراجعين</p>
+                 <h3 className="text-4xl font-bold text-content mt-2">{queue.length}</h3>
               </div>
            </div>
         </div>
-        <div className="card p-8 bg-gradient-to-br from-white to-amber-50/30">
+        <div className="card-nhr p-8 bg-gradient-to-br from-surface to-warning/5">
            <div className="flex items-center gap-5">
-              <div className="w-16 h-16 bg-amber-500/10 rounded-3xl flex items-center justify-center text-3xl shadow-inner">⌛</div>
+              <div className="w-16 h-16 bg-warning/10 rounded-3xl flex items-center justify-center text-3xl shadow-inner">⌛</div>
               <div>
-                 <p className="text-sm font-bold text-slate-400 uppercase tracking-widest leading-none">في الانتظار</p>
-                 <h3 className="text-4xl font-black text-amber-600 mt-2">{queue.filter(q => q.status === 'WAITING').length}</h3>
+                 <p className="text-sm font-bold text-content-muted uppercase tracking-widest leading-none">في الانتظار</p>
+                  <h3 className="text-4xl font-bold text-warning mt-2">{queue.filter(q => q.status === 'WAITING').length}</h3>
               </div>
            </div>
         </div>
-        <div className="card p-8 bg-gradient-to-br from-white to-rose-50/30">
+        <div className="card-nhr p-8 bg-gradient-to-br from-surface to-error/5">
            <div className="flex items-center gap-5">
-              <div className="w-16 h-16 bg-rose-500/10 rounded-3xl flex items-center justify-center text-3xl shadow-inner">🩺</div>
+              <div className="w-16 h-16 bg-error/10 rounded-3xl flex items-center justify-center text-3xl shadow-inner">🩺</div>
               <div>
-                 <p className="text-sm font-bold text-slate-400 uppercase tracking-widest leading-none">قيد المعاينة</p>
-                 <h3 className="text-4xl font-black text-rose-600 mt-2">{queue.filter(q => q.status === 'IN_SESSION').length}</h3>
+                 <p className="text-sm font-bold text-content-muted uppercase tracking-widest leading-none">قيد المعاينة</p>
+                  <h3 className="text-4xl font-bold text-error mt-2">{queue.filter(q => q.status === 'IN_SESSION').length}</h3>
               </div>
            </div>
         </div>
@@ -79,16 +79,16 @@ const ReceptionDashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
         {/* Sidebar Form */}
         <div className="lg:col-span-4">
-          <div className="card p-10 sticky top-10 border border-slate-100 shadow-xl">
-            <h2 className="text-2xl font-black text-slate-900 mb-2">تسجيل مراجع</h2>
-            <p className="text-sm font-bold text-slate-400 mb-8 uppercase tracking-widest">إضافة فورية للطابور</p>
+          <div className="card-nhr p-10 sticky top-10">
+            <h2 className="text-2xl font-bold text-content mb-2">تسجيل مراجع</h2>
+            <p className="text-sm font-bold text-content-muted uppercase tracking-widest mb-8">إضافة فورية للطابور</p>
             
             <form onSubmit={handleAddToQueue} className="space-y-6">
               <div className="form-control">
                 <input 
                   type="text" 
                   placeholder="الرقم الوطني للمراجع" 
-                  className="input text-center text-xl font-black tracking-widest h-16 bg-slate-50" 
+                  className="input-nhr w-full text-center text-xl font-bold tracking-widest h-16 bg-surface-bg" 
                   value={nationalId}
                   onChange={(e) => setNationalId(e.target.value)}
                   required
@@ -96,14 +96,14 @@ const ReceptionDashboard = () => {
               </div>
               
               <button 
-                className={`btn btn-primary btn-block h-16 text-lg font-black tracking-wide shadow-xl shadow-primary/100/20 ${localLoading ? 'loading' : ''}`}
+                className={`btn-nhr-primary w-full h-16 text-lg font-bold tracking-wide shadow-card ${localLoading ? 'loading' : ''}`}
                 disabled={localLoading}
               >
-                {localLoading ? '' : 'إضافة للطابور'}
+                {localLoading ? 'جاري الإضافة...' : 'إضافة للطابور'}
               </button>
               
               {error && (
-                <div className="p-4 bg-rose-50 text-rose-500 rounded-2xl text-xs font-bold text-center border border-rose-100 animate-bounce">
+                <div className="p-4 bg-error/10 text-error rounded-2xl text-xs font-bold text-center border border-error/20 animate-bounce">
                   {error}
                 </div>
               )}
@@ -113,25 +113,25 @@ const ReceptionDashboard = () => {
 
         {/* Live Queue List */}
         <div className="lg:col-span-8">
-          <div className="card overflow-hidden border border-slate-100 shadow-xl">
-            <div className="p-8 pb-4 flex justify-between items-center bg-slate-50/50">
-               <h2 className="text-xl font-black text-slate-900">طابور الانتظار المباشر</h2>
+          <div className="card-nhr overflow-hidden p-0">
+            <div className="p-8 pb-4 flex justify-between items-center bg-surface-bg/30">
+               <h2 className="text-xl font-bold text-content">طابور الانتظار المباشر</h2>
                <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                  <span className="text-[10px] font-black text-primary uppercase tracking-widest">تحديث مباشر</span>
+                  <span className="text-[10px] font-bold text-primary uppercase tracking-widest">تحديث مباشر</span>
                </div>
             </div>
             <div className="overflow-x-auto">
               <table className="table w-full">
                 <thead>
-                  <tr className="bg-slate-50/50">
-                    <th className="px-8 py-6 text-right text-xs font-black text-slate-400 uppercase tracking-[0.2em]">الدور</th>
-                    <th className="py-6 text-right text-xs font-black text-slate-400 uppercase tracking-[0.2em]">المراجع</th>
-                    <th className="py-6 text-right text-xs font-black text-slate-400 uppercase tracking-[0.2em]">الحالة</th>
-                    <th className="px-8 py-6 text-right text-xs font-black text-slate-400 uppercase tracking-[0.2em]">الوصول</th>
+                  <tr className="bg-surface-bg/30 border-b border-border-main">
+                    <th className="px-8 py-6 text-right text-xs font-bold text-content-muted uppercase tracking-[0.2em]">الدور</th>
+                    <th className="py-6 text-right text-xs font-bold text-content-muted uppercase tracking-[0.2em]">المراجع</th>
+                    <th className="py-6 text-right text-xs font-bold text-content-muted uppercase tracking-[0.2em]">الحالة</th>
+                    <th className="px-8 py-6 text-right text-xs font-bold text-content-muted uppercase tracking-[0.2em]">الوصول</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-border-main">
                   {loading ? (
                     [...Array(5)].map((_, i) => (
                       <tr key={i}>
@@ -148,31 +148,31 @@ const ReceptionDashboard = () => {
                     <tr>
                       <td colSpan="4" className="py-32 text-center">
                          <div className="text-5xl mb-4 opacity-20">📭</div>
-                         <h3 className="text-xl font-black text-slate-300 uppercase tracking-widest">لا يوجد مراجعين حالياً</h3>
+                         <h3 className="text-xl font-bold text-content-subtle uppercase tracking-widest">لا يوجد مراجعين حالياً</h3>
                       </td>
                     </tr>
                   ) : (
                     queue.map((item) => (
                       <tr key={item.id} className="hover:bg-primary/5 transition-colors group">
                         <td className="px-8 py-8">
-                           <div className="w-12 h-12 bg-white rounded-2xl shadow-sm flex items-center justify-center font-black text-xl text-primary border border-slate-200 group-hover:bg-primary group-hover:text-white transition-all">
+                           <div className="w-12 h-12 bg-surface-bg rounded-2xl shadow-sm flex items-center justify-center font-bold text-xl text-primary border border-border-main group-hover:bg-primary group-hover:text-content-inverse transition-all">
                              {item.queueNumber}
                            </div>
                         </td>
                         <td className="py-8">
-                           <div className="font-black text-lg text-slate-900">{item.patient.user.fullName}</div>
-                           <div className="text-xs font-bold text-slate-400 mt-1 uppercase tracking-widest font-mono">{item.patient.nationalId}</div>
+                           <div className="font-bold text-lg text-content">{item.patient.user.fullName}</div>
+                           <div className="text-xs font-bold text-content-muted mt-1 uppercase tracking-widest font-mono">{item.patient.nationalId}</div>
                         </td>
                         <td className="py-8">
-                           <span className={`px-4 py-2 rounded-xl text-xs font-black shadow-sm ${
+                           <span className={`px-4 py-2 rounded-xl text-xs font-bold ${
                              item.status === 'WAITING' 
-                               ? 'bg-amber-50 text-amber-600 border border-amber-100' 
-                               : 'bg-primary/10 text-primary border border-teal-100'
+                               ? 'bg-warning/10 text-warning border border-warning/20' 
+                               : 'bg-primary/10 text-primary border border-primary/20'
                            }`}>
                              {item.status === 'WAITING' ? 'في الانتظار' : 'عند الطبيب'}
                            </span>
                         </td>
-                        <td className="px-8 py-8 text-sm font-black text-slate-400">
+                        <td className="px-8 py-8 text-sm font-bold text-content-muted">
                            {new Date(item.date).toLocaleTimeString('ar-SY', { hour: '2-digit', minute: '2-digit' })}
                         </td>
                       </tr>
