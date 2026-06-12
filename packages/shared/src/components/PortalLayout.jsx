@@ -87,7 +87,17 @@ export const PortalLayout = ({
                 <div className="min-w-0">
                   <p className="text-sm font-bold text-content truncate">{user?.fullName}</p>
                   <p className="text-[10px] font-bold text-content-muted uppercase tracking-tighter">
-                    {user?.role === 'DOCTOR' ? 'طبيب متخصص' : user?.role === 'RECEPTIONIST' ? 'موظف استقبال' : 'صيدلاني'}
+                    {user?.role === 'DOCTOR' 
+                      ? 'طبيب متخصص' 
+                      : user?.role === 'RECEPTIONIST' 
+                        ? 'موظف استقبال' 
+                        : user?.role === 'PHARMACIST' 
+                          ? 'صيدلاني' 
+                          : user?.role === 'PATIENT' 
+                            ? 'مريض' 
+                            : user?.role === 'ADMIN' 
+                              ? 'مدير النظام' 
+                              : user?.role}
                   </p>
                 </div>
               </div>

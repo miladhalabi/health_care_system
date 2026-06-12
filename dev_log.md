@@ -39,6 +39,8 @@ we want to work step by step on this plan and implement it feature by feature wi
 12. [x] Pharmacy Portal: Prescription Search & Dispensing
 
 ## Current Status Log
+- **2026-06-12:** Implemented full Telegram Bot Service for patient workflows: added `telegramChatId` mapping in DB schema via direct sync, stored token in `.env`, and wrote the Telegram Bot Service (commands `/start`, `/login`, `/menu`, `/logout`; multi-step inline appointment booking, remote check-in for scheduled bookings, direct walk-in queueing, live turn numbers with Socket.io updates, list active appointments with cancel action, and list prescriptions).
+- **2026-06-12:** Expanded database seed script with robust cleanup and added a rich set of entities including 14 Governorates, 15 Specialties, 7 Clinics/Hospitals, 4 Pharmacies, 6 Doctors, 4 Receptionists, 4 Pharmacists, and 5 Patients with full medical/contact profiles and active rotation schedules.
 - **2026-04-26:** Normalized appointment lifecycle so scheduled bookings persist as `BOOKED`, checked-in patients use `WAITING`, and finalized attendance uses `ATTENDED` / `NO_SHOW` instead of UI-only mappings.
 - **2026-04-26:** Implemented Reliability & Compliance Phase 1 (Attendance Tracking): scheduled appointments now support explicit booked/attended/no-show outcomes with manual clinic-side attendance marking.
 - **2026-04-26:** Added clinic schedule attendance actions for receptionist/doctor workflows and exposed patient attendance history with missed appointment count in the patient portal.

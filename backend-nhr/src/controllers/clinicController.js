@@ -1,6 +1,8 @@
 import AppError from '../utils/AppError.js';
 import SchedulingService from '../services/SchedulingService.js';
 import AuditService from '../services/AuditService.js';
+import { sendTelegramNotification } from '../services/TelegramBotService.js';
+import logger from '../utils/logger.js';
 
 const TERMINAL_APPOINTMENT_STATUSES = ['ATTENDED', 'NO_SHOW', 'DONE', 'CANCELLED'];
 
@@ -245,10 +247,68 @@ export const callPatient = async (req, res, next) => {
     const appointment = await prisma.appointment.update({
       where: { id: appointmentId },
       data: { status: 'IN_SESSION' },
-      include: { clinic: true, patient: { include: { user: true } } }
+      include: { 
+        clinic: true, 
+        user: true, 
+        patient: { include: { user: true } } 
+      }
     });
 
     io.to(`clinic_${appointment.clinicId}`).emit('queue_updated', appointment);
+
+    // Send Telegram notification if the patient has linked their account
+    if (appointment.patient?.user?.telegramChatId) {
+      const doctorName = appointment.user ? `د. ${appointment.user.fullName}` : 'الطبيب';
+      const text = `🔔 **حان دورك الآن!** 🩺\n\n` +
+                   `يرجى التوجه إلى عيادة **${appointment.clinic.name}** لدخول المعاينة مع **${doctorName}**.\n\n` +
+                   `نتمنى لك السلامة والعافية! 🌸`;
+      
+      sendTelegramNotification(appointment.patient.user.telegramChatId, text).catch(err => {
+        logger.error('Error sending Telegram queue alert:', err);
+      });
+    }
+
+    // Send Telegram notifications to next patients in line (approaching turns)
+    try {
+      const todayStart = new Date();
+      todayStart.setHours(0,0,0,0);
+
+      const waitingList = await prisma.appointment.findMany({
+        where: {
+          clinicId: appointment.clinicId,
+          status: 'WAITING',
+          date: { gte: todayStart }
+        },
+        include: {
+          clinic: true,
+          patient: { include: { user: true } }
+        },
+        orderBy: { queueNumber: 'asc' }
+      });
+
+      // Alert the first waiting patient (index 0) - next in line
+      if (waitingList[0] && waitingList[0].patient?.user?.telegramChatId) {
+        const nextText = `🚶 **اقترب دورك!** 🩺\n\n` +
+                         `تفصلك خانة واحدة فقط عن المعاينة في عيادة **${appointment.clinic.name}**.\n` +
+                         `يرجى الاستعداد والانتظار بالقرب من باب العيادة.`;
+        sendTelegramNotification(waitingList[0].patient.user.telegramChatId, nextText).catch(err => {
+          logger.error('Error sending Turn Approaching Alert (next):', err);
+        });
+      }
+
+      // Alert the second waiting patient (index 1) - second in line
+      if (waitingList[1] && waitingList[1].patient?.user?.telegramChatId) {
+        const secondText = `🚶 **تنبيه الطابور!** ⏳\n\n` +
+                           `تفصلك خانتان عن دورك في عيادة **${appointment.clinic.name}**.\n` +
+                           `يرجى التواجد في صالة الانتظار.`;
+        sendTelegramNotification(waitingList[1].patient.user.telegramChatId, secondText).catch(err => {
+          logger.error('Error sending Turn Approaching Alert (second):', err);
+        });
+      }
+    } catch (err) {
+      logger.error('Error processing turn approaching alerts:', err);
+    }
+
     res.json(appointment);
   } catch (error) {
     next(error);

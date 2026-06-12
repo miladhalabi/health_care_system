@@ -649,6 +649,12 @@ Closing academic reflection on the project’s significance and future potential
 
 ---
 
+# 7.5 References (المراجع)
+
+Academic, technical, and national policy sources supporting the research, design, and implementation of NHR Syria.
+
+---
+
 # 📎 Appendices
 
 ## Appendix A — API Documentation

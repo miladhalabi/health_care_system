@@ -70,6 +70,7 @@ This checklist is derived from the `documentation_plan.md` to track the completi
 - [x] **7.2 Limitations:** Deployment scale and lack of national infrastructure integration.
 - [x] **7.3 Future Enhancements:** Telemedicine, AI analytics, and mobile-native apps.
 - [x] **7.4 Final Remarks:** Academic reflection.
+- [x] **7.5 References (المراجع):** Academic, technical, and national policy sources.
 
 ## 📎 Appendices
 - [ ] **Appendix A:** API Documentation.

@@ -10,6 +10,7 @@ import { PrismaClient } from '@prisma/client';
 
 import logger from './utils/logger.js';
 import errorMiddleware from './middlewares/errorMiddleware.js';
+import { initTelegramBot } from './services/TelegramBotService.js';
 
 dotenv.config();
 
@@ -94,4 +95,5 @@ app.use(errorMiddleware);
 
 httpServer.listen(PORT, () => {
   logger.info(`Server is running on port ${PORT}`);
+  initTelegramBot(prisma, io);
 });

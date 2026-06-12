@@ -19,7 +19,7 @@ This checklist tracks the implementation of the National Digital Health Platform
     - [x] Add `missedAppointments` (Int, Default: 0).
 - [x] **Audit System:** Create `AuditLog` model (ID, Action, Entity, EntityId, UserId, Details, CreatedAt).
 - [x] **Prisma Migration:** Run and verify `npx prisma migrate dev`.
-- [ ] **Seed Data:** Populate Governorates and Specialties.
+- [x] **Seed Data:** Populate Governorates and Specialties (Completed: comprehensive seeding with doctors, patients, receptionists, pharmacists, and clinics).
 
 ### **1.2 Backend: Architectural Scalability (Refactoring)**
 - [x] **Service Layer Pattern:**
@@ -103,3 +103,14 @@ This checklist tracks the implementation of the National Digital Health Platform
 
 - [ ] Backend: Data aggregation endpoints (by Governorate/Specialty).
 - [ ] Frontend: Ministry of Health Insights Dashboard.
+
+---
+
+## 🟢 Feature 9: Telegram Bot Integration
+**Status:** Completed (Backend Integration)
+
+- [x] Backend: Add `telegramChatId` mapping to database schema.
+- [x] Backend: Save bot token in environment configurations (`.env` and `.env.example`).
+- [x] Backend: Implement Telegram Bot Service (commands: `/start`, `/login`, `/menu`, `/logout`; flows: inline booking flow, queue check-in and remote join, active appointments list, prescriptions view, and account unlinking).
+- [x] Backend: Integrate and initialize bot startup on server run.
+
