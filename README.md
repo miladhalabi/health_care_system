@@ -10,6 +10,30 @@ The system consists of three specialized portals connected to a central backend:
 *   **👤 Patient Portal**: For citizens. Allows viewing medical history, tracking prescriptions, booking appointments, and remote queueing.
 *   **💊 Pharmacy Portal**: For pharmacists. Enables searching for active prescriptions by National ID and managing the dispensing of medications.
 
+## 🤖 Telegram Bot Integration
+
+A zero-dependency, long-polling Telegram Bot service integrated directly into the backend for citizen patient workflows.
+
+### Core Features:
+*   **🔒 Secure Account Linking (`/login`):** Connects a citizen's Telegram account to their National ID. Automatically deletes credentials messages in the chat history for security.
+*   **📅 Interactive Booking (`/menu`):** Multi-step inline selection flow (Governorate $\rightarrow$ Specialty $\rightarrow$ Clinic $\rightarrow$ Doctor $\rightarrow$ 7-day available slot search).
+*   **🚶 Queue Management & Remote Check-In:**
+    *   Remote check-in for scheduled bookings to start waiting.
+    *   Direct walk-in queue joining.
+    *   Live queue number updates.
+*   **🔔 Real-Time Queue Alert notifications:**
+    *   *Called Patient:* Notifies the called patient to enter the consultation room immediately.
+    *   *Approaching Turns:* Automatically alerts the *next-in-line* and *second-in-line* waiting patients on Telegram to prepare them.
+*   **📋 Bookings & Prescriptions:** View active appointments, cancel pending bookings, and view active electronic prescriptions.
+
+### Bot Commands:
+*   `/start` - Initialize greeting and prompt for account link.
+*   `/login <national_id> <password>` - Link NHR account to Telegram (deletes message instantly).
+*   `/menu` - Launch the primary inline service menu.
+*   `/logout` - Unlink account from Telegram.
+
+---
+
 ## 🛠 Tech Stack
 
 ### Backend
